@@ -25,6 +25,7 @@ class Card_values(Enum):
     KING = 13 
     ACE = 14
 
+
 class Cards: 
     def __init__(self, card_suits, card_values):
         self.suit = card_suits
@@ -64,7 +65,42 @@ class Deck_of_cards():
         else:
             card = self.cards.pop()
             return card
+        
+class HigherLower:
+    def __init__(self):
+        self.card__deck = Deck_of_cards()
+        self.current_card = self.card__deck.pick_a_card()  
+        self.points = 0
 
+        def make_a_guess(self):
+            print("Time to make a guess !\n") 
+            answer = input("Higher or Lower: ")
+            print("You picked ",answer,"!\n Lets see if your right....")
+            next_card = self.card_deck.pick_a_card()
+
+            if self.current_card > next_card.value.value: 
+                correct_answer = "Higher"
+            elif self.current_card < next_card.value.value: 
+                correct_answer = "Lower"
+            
+            check_guess(self,answer,correct_answer)
+            if self.points == 0: 
+                print("You lose !Game over" )
+            else:
+                self.currentCard = next_card
+                
+
+        def check_guess(self,answer,correct_answer): 
+            if (answer == correct_answer):
+                self.points += 2
+                print("Correct answer !")
+            elif (answer != correct_answer):
+                self.points -=1
+                print("Wrong answer !")
+            elif (answer == correct_answer):
+                print("Stalemate")
+
+ 
 #TESTING PURPOSES REMOVE LATER
 suitTest = Card_suits
 valueTest = Card_values
@@ -75,11 +111,11 @@ card_picked = FullCards.pick_a_card()
 print("Test card picked",card_picked)
 FullCards.listOfCards()
 
-c =  FullCards.listOfCards()
-for i in c:
-    if card_picked == i:
-        print("CARD NOT PICKED") 
+#c =  FullCards.listOfCards()
+# for i in c:
+  #  if card_picked == i:
+   #     print("CARD NOT PICKED") 
 
-
-
+game = HigherLower()
+game.make_a_guess()
      
