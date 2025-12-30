@@ -44,7 +44,8 @@ class Deck_of_cards():
     def listOfCards(self):
         for i in self.cards:
             #Test print of full deck of cards
-            print(i)
+           print(i)
+        return self.cards
 
     #Method for shuffling deck of cards
     def shuffle_deck(self):
@@ -57,13 +58,28 @@ class Deck_of_cards():
             num+= 1
            # print(num,self.cards[x],"swapped with",self.cards[j]) 
 
+    def pick_a_card(self):
+        if self.cards == 0:
+            print("Deck is empty")
+        else:
+            card = self.cards.pop()
+            return card
+
 #TESTING PURPOSES REMOVE LATER
 suitTest = Card_suits
 valueTest = Card_values
 FullCards = Deck_of_cards()
+#FullCards.listOfCards()
+#FullCards.shuffle_deck()
+card_picked = FullCards.pick_a_card()
+print("Test card picked",card_picked)
 FullCards.listOfCards()
-FullCards.shuffle_deck()
-FullCards.listOfCards()
+
+c =  FullCards.listOfCards()
+for i in c:
+    if card_picked == i:
+        print("CARD NOT PICKED") 
+
 
 
      
