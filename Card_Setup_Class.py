@@ -39,13 +39,19 @@ class Deck_of_cards():
         self.cards = [ Cards(suit,value) 
                     for suit in  Card_suits
                     for value in Card_values ]
+        
+    def listOfCards(self):
+        for i in self.cards:
+            #Test print of full deck of cards
+            print(i)
 
+    #  def shuffle_deck(self):
+           
 #TESTING PURPOSES REMOVE LATER
 suitTest = Card_suits
 valueTest = Card_values
-cardtest = Cards(suitTest.HEARTS,valueTest.FIVE)
-print("check ",cardtest)
-
+FullCards = Deck_of_cards()
+FullCards.listOfCards()
 
 
      
