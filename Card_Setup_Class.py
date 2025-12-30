@@ -1,4 +1,5 @@
 from enum import Enum
+import random
 
 
 
@@ -45,12 +46,23 @@ class Deck_of_cards():
             #Test print of full deck of cards
             print(i)
 
-    #  def shuffle_deck(self):
-           
+    #Method for shuffling deck of cards
+    def shuffle_deck(self):
+        num = 1
+        #Loop through deck of cards starting from last card in deck 
+        for x in range(len(self.cards) -1 ,0,-1):
+            #generates random value to swap current index value with
+            j = random.randint(0,x)
+            self.cards[x] , self.cards[j] = self.cards[j], self.cards[x]
+            num+= 1
+           # print(num,self.cards[x],"swapped with",self.cards[j]) 
+
 #TESTING PURPOSES REMOVE LATER
 suitTest = Card_suits
 valueTest = Card_values
 FullCards = Deck_of_cards()
+FullCards.listOfCards()
+FullCards.shuffle_deck()
 FullCards.listOfCards()
 
 
