@@ -2,7 +2,7 @@ from enum import Enum
 
 
 
-class Rank(Enum):
+class Card_suits(Enum):
     HEARTS = "Hearts"
     DIA = "Diamonds"
     CLUBS = "Clubs"
@@ -23,3 +23,22 @@ class Card_values(Enum):
     QUEEN = 12
     KING = 13 
     ACE = 14
+
+class Cards: 
+    def __init__(self, card_suits, card_values):
+        self.suit = card_suits
+        self.value = card_values
+    
+    def __str__(self):
+        return f"{self.value.name} of {self.suit.value}"
+         
+
+#TESTING PURPOSES REMOVE LATER
+suitTest = Card_suits
+valueTest = Card_values
+cardtest = Cards(suitTest.HEARTS,valueTest.FIVE)
+print("check ",cardtest)
+
+
+
+     
