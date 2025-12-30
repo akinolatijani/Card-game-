@@ -33,6 +33,13 @@ class Cards:
         return f"{self.value.name} of {self.suit.value}"
          
 
+class Deck_of_cards():
+    def __init__(self):
+        #loop through set of cards to create full deck of 52 cards
+        self.cards = [ Cards(suit,value) 
+                    for suit in  Card_suits
+                    for value in Card_values ]
+
 #TESTING PURPOSES REMOVE LATER
 suitTest = Card_suits
 valueTest = Card_values
