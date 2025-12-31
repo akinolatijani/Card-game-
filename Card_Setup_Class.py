@@ -96,15 +96,15 @@ class HigherLower:
         next_card = self.card_deck.pick_a_card()
        
         curr = self.current_card.value.value
-        next = next_card.value.value
+        nxt= next_card.value.value
 
         if next_card is None:
             print("Deck is empty...I Guess you WON! Kind of....")
 
-        if curr < next: 
+        if curr < nxt: 
             correct_answer = "higher"
             self.check_guess(answer,correct_answer)
-        elif curr > next: 
+        elif curr > nxt: 
             correct_answer = "lower"
             self.check_guess(answer,correct_answer)
 
@@ -141,7 +141,7 @@ def main():
         "You have a deck of 52 cards",
         "At the beginning of the game, a card is drawn",
         "Your aim is to guess if the next card is higher or lower",
-        "+2 points for a correct answer, -1 point for an incorrect answer",
+        "+1 points for a correct answer, -1 point for an incorrect answer",
         "If the current and next card are equal: no points gained or lost (STALEMATE)",         
     ]
      
