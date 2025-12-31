@@ -108,22 +108,40 @@ class HigherLower:
 
 
 
+
+
+def main():
+    print("WELCOME TO HIGHER/LOWER".center(70, "*"),"\n")
+    print("INSTRUCTIONS OF THE GAME ".center(70,),"\n")
+    print("*" * 70)
  
-#TESTING PURPOSES REMOVE LATER
-suitTest = Card_suits
-valueTest = Card_values
-FullCards = Deck_of_cards()
-#FullCards.listOfCards()
-#FullCards.shuffle_deck()
-card_picked = FullCards.pick_a_card()
-print("Test card picked",card_picked)
-FullCards.listOfCards()
-
-#c =  FullCards.listOfCards()
-# for i in c:
-  #  if card_picked == i:
-   #     print("CARD NOT PICKED") 
-
-game = HigherLower()
-game.make_a_guess()
+    rules = [
+        "You have a deck of 52 cards",
+        "At the beginning of the game, a card is drawn",
+        "Your aim is to guess if the next card is higher or lower",
+        "+2 points for a correct answer, -1 point for an incorrect answer",
+        "If the current and next card are equal: no points gained or lost (STALEMATE)",         
+    ]
      
+
+    for rule in rules:
+        print(f"  • {rule}")
+
+    print("\n" + "HOW DO YOU WIN".center(70))
+    print("*" * 70,"\n")
+    print("  • Reach 10 points to WIN the game")
+    print("  • BONUS: Correct guess + ACE give DOUBLE points \n")
+    
+    print("HOW DO YOU LOSE".center(70))
+    print("*" * 70,"\n")
+    print("  • You have 4 LIVES *** Each point lost is a Live gone")
+    print("  • Lose all LIVES....GAME OVER \n")
+    print("*" * 70,"\n")
+    print("GOODLUCK !".center(70),"\n")
+
+    game = HigherLower()
+    game.make_a_guess() 
+        
+
+if __name__ == "__main__":
+    main()
