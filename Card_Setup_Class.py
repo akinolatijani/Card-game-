@@ -72,6 +72,10 @@ class HigherLower:
         self.points = 0
         self.lives = 4
         self.start_game = False
+        self.streak = 0
+
+    def is_red(self,card):
+        return card.suit in (Card_suits.HEARTS, Card_suits.DIA)
     
     def get_game_score(self):
         return self.lives,self.points
@@ -81,7 +85,10 @@ class HigherLower:
         print(f"Current card : {self.current_card.value.name} of {self.current_card.suit.value}")
         print("\n TIME TO GUESS !".center(70),"\n") 
         
-        raw_answer = input("Pick (H)Higher or (L)Lower: ".center(60)).strip().lower()
+        risk_raw = input("Risk Mode? (Y/N): ".center(70)).strip().lower()
+        risk_mode = risk_raw in ("y", "yes")
+
+        raw_answer = input("Pick (H)Higher or (L)Lower: ".center(70)).strip().lower()
         if raw_answer in ("h","higher"):
             answer = "higher"
 
@@ -101,12 +108,40 @@ class HigherLower:
         if next_card is None:
             print("Deck is empty...I Guess you WON! Kind of....")
 
+        if curr == nxt:
+            print("\n STALEMATE! Values are equal.\n".center(70))
+            print("BONUS ROUND: Guess the color of the next card (R/B)".center(70))
+
+            color_guess = input("Pick (R)ed or (B)lack: ".center(60)).strip().lower()
+            if color_guess in ("r", "red"):
+                guessed_red = True
+            elif color_guess in ("b", "black"):
+                guessed_red = False
+            else:
+                print("\nInvalid input. No bonus/penalty applied.\n")
+                # choose: keep streak or reset it — I keep it unchanged here
+                self.current_card = next_card
+                return
+
+            actual_red = self.is_red(next_card)
+
+            if guessed_red == actual_red:
+                self.points += 1
+                print("\n CORRECT COLOR! (+1 bonus point)\n".center(70))
+            else:
+                self.lives -= 1
+                print("\n WRONG COLOR! (-1 life)\n".center(70))
+
+            # move on to next round
+            self.current_card = next_card
+            return
+        
         if curr < nxt: 
             correct_answer = "higher"
-            self.check_guess(answer,correct_answer)
+            self.check_guess(answer,correct_answer,next_card, risk_mode)
         elif curr > nxt: 
             correct_answer = "lower"
-            self.check_guess(answer,correct_answer)
+            self.check_guess(answer,correct_answer,next_card, risk_mode)
 
         print("The card was",next_card.value.name,"of",next_card.suit.value)
 
@@ -119,18 +154,50 @@ class HigherLower:
             self.current_card = next_card
             
 
-    def check_guess(self,answer,correct_answer): 
+    def check_guess(self,answer,correct_answer,next_card,risk_mode): 
         if (answer == correct_answer):
-            self.points += 1
-            print("\n CORRECT !".center(70),"\n")
-
-        elif (answer != correct_answer):
-            self.lives -= 1
-            self.points -= 1
-            print("\n WRONG !".center(70),"\n")
+            # self.points += 1
+            self.streak += 1
+           
+            if self.streak >= 5:
+                gained = 3
+            elif self.streak >= 3:
+                gained = 2
+            else:
+                gained = 1 
             
-        elif (answer == correct_answer):
-            print("STALEMATE")
+            if next_card.value == Card_values.ACE:
+                gained *= 2
+                print("\n ACE BONUS! DOUBLE POINTS!\n".center(70)) 
+    
+            if risk_mode:
+                gained *= 2
+                print("\n RISK MODE WIN! Points doubled again!\n".center(70))
+
+            self.points += gained
+            print(f"\n CORRECT! (+{gained} points)  Streak: {self.streak}\n".center(70))
+
+        else:
+            self.streak = 0
+
+            self.points -= 1
+
+            if risk_mode:
+                self.lives -= 2
+                print("\n WRONG in RISK MODE! (-1 point, -2 lives)\n".center(70))
+            else:
+                self.lives -= 1
+                print("\n WRONG! (-1 point, -1 life)\n".center(70))
+
+           # print("\n CORRECT !".center(70),"\n")
+
+      #  elif (answer != correct_answer):
+       #     self.lives -= 1
+       #     self.points -= 1
+       #     print("\n WRONG !".center(70),"\n")
+            
+       # elif (answer == correct_answer):
+          #  print("STALEMATE")
  
 def main():
     print("WELCOME TO HIGHER/LOWER".center(70, "*"),"\n")
