@@ -1,8 +1,6 @@
 from enum import Enum
 import random
 
-
-
 class Card_suits(Enum):
     HEARTS = "Hearts"
     DIA = "Diamonds"
@@ -60,15 +58,16 @@ class Deck_of_cards():
            # print(num,self.cards[x],"swapped with",self.cards[j]) 
 
     def pick_a_card(self):
-        if self.cards == 0:
+        if len(self.cards) == 0:
             print("Deck is empty")
-        else:
-            card = self.cards.pop()
-            return card
+            return None
+        return self.cards.pop()
+
         
 class HigherLower:
     def __init__(self):
         self.card_deck = Deck_of_cards()
+        self.card_deck.shuffle_deck()
         self.current_card = self.card_deck.pick_a_card()  
         self.points = 0
         self.lives = 4
@@ -90,24 +89,34 @@ class HigherLower:
             answer = "lower"
         else:
             print("\nInvalid input. Please type H/L or Higher/Lower.\n")
-            
-        print("\n You picked ",answer,"! Lets see if your right....\n")
-        next_card = self.card_deck.pick_a_card()
-
-        if self.current_card.value.value < next_card.value.value: 
-            correct_answer = "higher"
-        elif self.current_card.value.value > next_card.value.value: 
-            correct_answer = "lower"
+            return None 
         
-        self.check_guess(answer,correct_answer)
+        print("\n You picked ",answer,"! Lets see if your right....\n")
+        
+        next_card = self.card_deck.pick_a_card()
+       
+        curr = self.current_card.value.value
+        next = next_card.value.value
+
+        if next_card is None:
+            print("Deck is empty...I Guess you WON! Kind of....")
+
+        if curr < next: 
+            correct_answer = "higher"
+            self.check_guess(answer,correct_answer)
+        elif curr > next: 
+            correct_answer = "lower"
+            self.check_guess(answer,correct_answer)
+
         print("The card was",next_card.value.name,"of",next_card.suit.value)
 
-        if self.lives == 0: 
+        if self.lives <= 0: 
             print("LIVES RAN OUT ! GAME OVER".center(70,"*"),"\n" ) 
             self.start_game = False
-
+        elif self.points >= 10:
+            print("YOU WON GAME ! CONGRATULATIONS".center(70,"*"),"\n" ) 
         else:
-            self.currentCard = next_card
+            self.current_card = next_card
             
 
     def check_guess(self,answer,correct_answer): 
@@ -116,8 +125,8 @@ class HigherLower:
             print("\n CORRECT !".center(70),"\n")
 
         elif (answer != correct_answer):
-            self.lives -=1
-            self.points -=1
+            self.lives -= 1
+            self.points -= 1
             print("\n WRONG !".center(70),"\n")
             
         elif (answer == correct_answer):
