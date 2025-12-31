@@ -11,7 +11,7 @@ class Card_suits(Enum):
 
 
 class Card_values(Enum):
-    TWO = 2
+    TWO = 2 
     THREE = 3
     FOUR = 4
     FIVE = 5 
@@ -71,44 +71,52 @@ class HigherLower:
         self.card_deck = Deck_of_cards()
         self.current_card = self.card_deck.pick_a_card()  
         self.points = 0
+        self.lives = 4
         self.start_game = False
+    
+    def get_game_score(self):
+        return self.lives,self.points
     
     def make_a_guess(self):
     
         print(f"Current card : {self.current_card.value.name} of {self.current_card.suit.value}")
-
         print("\n TIME TO GUESS !".center(70),"\n") 
-        print("*" * 70)
-
-        print(f"Current card : {self.current_card.value.name} of {self.current_card.suit.value}")
         
-        answer = input("Pick (H)Higher or (L)Lower: ".center(60))
+        raw_answer = input("Pick (H)Higher or (L)Lower: ".center(60)).strip().lower()
+        if raw_answer in ("h","higher"):
+            answer = "higher"
 
+        elif raw_answer in ("l","lower"):
+            answer = "lower"
+        else:
+            print("\nInvalid input. Please type H/L or Higher/Lower.\n")
+            
         print("\n You picked ",answer,"! Lets see if your right....\n")
         next_card = self.card_deck.pick_a_card()
 
         if self.current_card.value.value < next_card.value.value: 
-            correct_answer = "Higher"
+            correct_answer = "higher"
         elif self.current_card.value.value > next_card.value.value: 
-            correct_answer = "Lower"
+            correct_answer = "lower"
         
         self.check_guess(answer,correct_answer)
         print("The card was",next_card.value.name,"of",next_card.suit.value)
 
-        if self.points == 0: 
-            print("LIVES RAN OUT ! GAME OVER" ) 
+        if self.lives == 0: 
+            print("LIVES RAN OUT ! GAME OVER".center(70,"*"),"\n" ) 
             self.start_game = False
 
-       # else:
-        #    self.currentCard = next_card
+        else:
+            self.currentCard = next_card
             
 
     def check_guess(self,answer,correct_answer): 
         if (answer == correct_answer):
-            self.points += 2
+            self.points += 1
             print("\n CORRECT !".center(70),"\n")
 
         elif (answer != correct_answer):
+            self.lives -=1
             self.points -=1
             print("\n WRONG !".center(70),"\n")
             
@@ -152,8 +160,19 @@ def main():
         
     while game.start_game:
         game.make_a_guess() 
-        game
         
+        if not game.start_game:
+            break  
+    
+        lives,points = game.get_game_score()
+        
+        print("*" * 70)
+        print("NEXT ROUND !        YOUR SCORE:", points,
+            "\n                     YOUR LIVES:", lives)
+        print("*" * 70)
+    
+       
+   
 
 if __name__ == "__main__":
     main()
