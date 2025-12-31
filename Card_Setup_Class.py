@@ -71,12 +71,20 @@ class HigherLower:
         self.card_deck = Deck_of_cards()
         self.current_card = self.card_deck.pick_a_card()  
         self.points = 0
+        self.start_game = False
     
     def make_a_guess(self):
-        print("Your card is",self.current_card.value.name,"of",self.current_card.suit.value, "\n")
-        print("Time to make a guess !\n") 
-        answer = input("Higher or Lower: ")
-        print("You picked ",answer,"! Lets see if your right....\n")
+    
+        print(f"Current card : {self.current_card.value.name} of {self.current_card.suit.value}")
+
+        print("\n TIME TO GUESS !".center(70),"\n") 
+        print("*" * 70)
+
+        print(f"Current card : {self.current_card.value.name} of {self.current_card.suit.value}")
+        
+        answer = input("Pick (H)Higher or (L)Lower: ".center(60))
+
+        print("\n You picked ",answer,"! Lets see if your right....\n")
         next_card = self.card_deck.pick_a_card()
 
         if self.current_card.value.value < next_card.value.value: 
@@ -88,28 +96,25 @@ class HigherLower:
         print("The card was",next_card.value.name,"of",next_card.suit.value)
 
         if self.points == 0: 
-            print("You lose !Game over" ) 
-        else:
-            self.currentCard = next_card
+            print("LIVES RAN OUT ! GAME OVER" ) 
+            self.start_game = False
+
+       # else:
+        #    self.currentCard = next_card
             
 
     def check_guess(self,answer,correct_answer): 
         if (answer == correct_answer):
             self.points += 2
-            print("Correct answer !")
-
+            print("\n CORRECT !".center(70),"\n")
 
         elif (answer != correct_answer):
             self.points -=1
-            print("Wrong answer !")
+            print("\n WRONG !".center(70),"\n")
+            
         elif (answer == correct_answer):
-            print("Stalemate")
-            ##testing 
-
-
-
-
-
+            print("STALEMATE")
+ 
 def main():
     print("WELCOME TO HIGHER/LOWER".center(70, "*"),"\n")
     print("INSTRUCTIONS OF THE GAME ".center(70,),"\n")
@@ -140,7 +145,14 @@ def main():
     print("GOODLUCK !".center(70),"\n")
 
     game = HigherLower()
-    game.make_a_guess() 
+
+    Start_game = input("PRESS (S) TO START GAME".center(70,"*"))
+    if Start_game.strip().lower() == "s":
+        game.start_game = True
+        
+    while game.start_game:
+        game.make_a_guess() 
+        game
         
 
 if __name__ == "__main__":
