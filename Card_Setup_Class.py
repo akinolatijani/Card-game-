@@ -68,37 +68,45 @@ class Deck_of_cards():
         
 class HigherLower:
     def __init__(self):
-        self.card__deck = Deck_of_cards()
-        self.current_card = self.card__deck.pick_a_card()  
+        self.card_deck = Deck_of_cards()
+        self.current_card = self.card_deck.pick_a_card()  
         self.points = 0
+    
+    def make_a_guess(self):
+        print("Your card is",self.current_card.value.name,"of",self.current_card.suit.value, "\n")
+        print("Time to make a guess !\n") 
+        answer = input("Higher or Lower: ")
+        print("You picked ",answer,"! Lets see if your right....\n")
+        next_card = self.card_deck.pick_a_card()
 
-        def make_a_guess(self):
-            print("Time to make a guess !\n") 
-            answer = input("Higher or Lower: ")
-            print("You picked ",answer,"!\n Lets see if your right....")
-            next_card = self.card_deck.pick_a_card()
+        if self.current_card.value.value < next_card.value.value: 
+            correct_answer = "Higher"
+        elif self.current_card.value.value > next_card.value.value: 
+            correct_answer = "Lower"
+        
+        self.check_guess(answer,correct_answer)
+        print("The card was",next_card.value.name,"of",next_card.suit.value)
 
-            if self.current_card > next_card.value.value: 
-                correct_answer = "Higher"
-            elif self.current_card < next_card.value.value: 
-                correct_answer = "Lower"
+        if self.points == 0: 
+            print("You lose !Game over" ) 
+        else:
+            self.currentCard = next_card
             
-            check_guess(self,answer,correct_answer)
-            if self.points == 0: 
-                print("You lose !Game over" )
-            else:
-                self.currentCard = next_card
-                
 
-        def check_guess(self,answer,correct_answer): 
-            if (answer == correct_answer):
-                self.points += 2
-                print("Correct answer !")
-            elif (answer != correct_answer):
-                self.points -=1
-                print("Wrong answer !")
-            elif (answer == correct_answer):
-                print("Stalemate")
+    def check_guess(self,answer,correct_answer): 
+        if (answer == correct_answer):
+            self.points += 2
+            print("Correct answer !")
+
+
+        elif (answer != correct_answer):
+            self.points -=1
+            print("Wrong answer !")
+        elif (answer == correct_answer):
+            print("Stalemate")
+            ##testing 
+
+
 
  
 #TESTING PURPOSES REMOVE LATER
