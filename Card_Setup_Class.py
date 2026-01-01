@@ -1,6 +1,12 @@
 from enum import Enum
 import random
 
+
+#creating a class defining joker card and normal cards
+class Card_type(Enum):
+    NORMAL = 1
+    JOKER = 2
+
 class Card_suits(Enum):
     HEARTS = "Hearts"
     DIA = "Diamonds"
@@ -25,21 +31,31 @@ class Card_values(Enum):
 
 
 class Cards: 
-    def __init__(self, card_suits, card_values):
+    def __init__(self, card_suits = None, card_values=None,card_type = Card_type.NORMAL):
         self.suit = card_suits
         self.value = card_values
+        self.card_type = card_type
+     
+
+    def is_joker_card(self):
+        return self.card_type == Card_type.JOKER 
     
     def __str__(self):
+        if self.is_joker_card():
+            return "JOKER"
         return f"{self.value.name} of {self.suit.value}"
          
 
 class Deck_of_cards():
     def __init__(self):
         #loop through set of cards to create full deck of 52 cards
-        self.cards = [ Cards(suit,value) 
+        self.cards = [ Cards(suit,value, Card_type.NORMAL) 
                     for suit in  Card_suits
                     for value in Card_values ]
         
+        for i in range(0,2):
+            self.cards.append((Cards(card_type=Card_type.JOKER)))
+
     def listOfCards(self):
         for i in self.cards:
             #Test print of full deck of cards
@@ -101,12 +117,20 @@ class HigherLower:
         print("\n You picked ",answer,"! Lets see if your right....\n")
         
         next_card = self.card_deck.pick_a_card()
-       
+
+        if next_card.is_joker_card():
+            print("\nJOKER CARD !\n")
+            self.current_card = self.card_deck.pick_a_card()
+            return None 
+        
         curr = self.current_card.value.value
         nxt= next_card.value.value
 
         if next_card is None:
             print("Deck is empty...I Guess you WON! Kind of....")
+            self.start_game = False
+            return None 
+
 
         if curr == nxt:
             print("\n STALEMATE! Values are equal.\n".center(70))
@@ -188,16 +212,6 @@ class HigherLower:
             else:
                 self.lives -= 1
                 print("\n WRONG! (-1 point, -1 life)\n".center(70))
-
-           # print("\n CORRECT !".center(70),"\n")
-
-      #  elif (answer != correct_answer):
-       #     self.lives -= 1
-       #     self.points -= 1
-       #     print("\n WRONG !".center(70),"\n")
-            
-       # elif (answer == correct_answer):
-          #  print("STALEMATE")
  
 def main():
     print("WELCOME TO HIGHER/LOWER".center(70, "*"),"\n")
