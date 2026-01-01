@@ -44,8 +44,7 @@ class Cards:
         self.suit = card_suits
         self.value = card_values
         self.card_type = card_type
-     
-
+        
     def is_joker_card(self):
         return self.card_type == Card_type.JOKER 
     
@@ -80,7 +79,6 @@ class Deck_of_cards():
             j = random.randint(0,x)
             self.cards[x] , self.cards[j] = self.cards[j], self.cards[x]
             num+= 1
-           # print(num,self.cards[x],"swapped with",self.cards[j]) 
 
     def pick_a_card(self):
         if len(self.cards) == 0:
@@ -93,12 +91,24 @@ class HigherLower:
     def __init__(self):
         self.card_deck = Deck_of_cards()
         self.card_deck.shuffle_deck()
-        self.current_card = self.card_deck.pick_a_card()  
+        self.current_card = self.pick_new_card()
         self.points = 0
         self.lives = 4
         self.start_game = False
         self.streak = 0
 
+    def pick_new_card(self):
+        while True:
+            currenrt_card = self.card_deck.pick_a_card()
+            if currenrt_card is None:
+                self.start_game = False
+                return None
+           
+            if currenrt_card.is_joker_card():
+                print(f"{Indent}JOKER CARD! (current card replaced)\n")
+                continue
+            return currenrt_card
+        
     def is_red(self,card):
         return card.suit in (Card_suits.HEARTS, Card_suits.DIA)
     
@@ -109,7 +119,7 @@ class HigherLower:
     
         print(f"{Rules_Indent}Current card : {self.current_card.value.name} of {self.current_card.suit.value}")
         time.sleep(delay)
-        print(f"\n{Rules_Indent}TIME TO GUESS !".center(100),"\n") 
+        print(f"\n{Indent}TIME TO GUESS !".center(100),"\n") 
         time.sleep(2)
         
         risk_raw = input(f"{Indent}Risk Mode? (Y/N): ".center(100)).strip().lower()
@@ -139,7 +149,7 @@ class HigherLower:
         #ADD CONSEQUENCE LATER
         if next_card.is_joker_card():
             print("\n"+f"{Indent}JOKER CARD !\n")
-            self.current_card = self.card_deck.pick_a_card()
+            self.current_card = self.pick_new_card()
             return None 
         
         curr = self.current_card.value.value
@@ -281,8 +291,8 @@ def main():
         lives,points = game.get_game_score()
         time.sleep(delay)
         print("\n"+Astericks_Indent + "*" * 100)
-        print(f"{Indent}NEXT ROUND !        YOUR SCORE:", points,
-            "\n"+f"{Indent}                     YOUR LIVES:", lives)
+        print(f"{Indent}NEXT ROUND !                       YOUR SCORE:", points,
+            "\n"+f"{Indent}                                YOUR LIVES:", lives)
         print(Astericks_Indent + "*" * 100)
         time.sleep(2)
      
