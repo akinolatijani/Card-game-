@@ -117,11 +117,6 @@ class HigherLower:
         print("\n You picked ",answer,"! Lets see if your right....\n")
         
         next_card = self.card_deck.pick_a_card()
-
-        if next_card.is_joker_card():
-            print("\nJOKER CARD !\n")
-            self.current_card = self.card_deck.pick_a_card()
-            return None 
         
         curr = self.current_card.value.value
         nxt= next_card.value.value
@@ -131,6 +126,10 @@ class HigherLower:
             self.start_game = False
             return None 
 
+        if next_card.is_joker_card():
+            print("\nJOKER CARD !\n")
+            self.current_card = self.card_deck.pick_a_card()
+            return None 
 
         if curr == nxt:
             print("\n STALEMATE! Values are equal.\n".center(70))
@@ -174,6 +173,8 @@ class HigherLower:
             self.start_game = False
         elif self.points >= 10:
             print("YOU WON GAME ! CONGRATULATIONS".center(70,"*"),"\n" ) 
+            self.start_game = False
+
         else:
             self.current_card = next_card
             
@@ -219,25 +220,28 @@ def main():
     print("*" * 70)
  
     rules = [
-        "You have a deck of 52 cards",
-        "At the beginning of the game, a card is drawn",
-        "Your aim is to guess if the next card is higher or lower",
-        "+1 points for a correct answer, -1 point for an incorrect answer",
-        "If the current and next card are equal: no points gained or lost (STALEMATE)",         
+            "52-card deck + 2 Jokers",
+            "One card is drawn to start the game",
+            "Each round, guess Higher or Lower",
+            "Correct: +1 point | Wrong: -1 point and -1 life",
+            "Risk Mode (optional): double points or lose 2 lives",
+            "Streaks: 3 correct = +2, 5 correct = +3",
+            "ACE doubles points on a correct guess",
+            "Stalemate: guess Red/Black (+1 point or -1 life)",
+            "Joker: round is skipped and a new card is drawn"
     ]
      
-
     for rule in rules:
         print(f"  • {rule}")
 
     print("\n" + "HOW DO YOU WIN".center(70))
     print("*" * 70,"\n")
     print("  • Reach 10 points to WIN the game")
-    print("  • BONUS: Correct guess + ACE give DOUBLE points \n")
+    print("  • Bonus points can be earned through streaks, Risk Mode, and ACE cards\n")
     
     print("HOW DO YOU LOSE".center(70))
     print("*" * 70,"\n")
-    print("  • You have 4 LIVES *** Each point lost is a Live gone")
+    print("  • You have 4 LIVES ****")
     print("  • Lose all LIVES....GAME OVER \n")
     print("*" * 70,"\n")
     print("GOODLUCK !".center(70),"\n")
@@ -246,7 +250,7 @@ def main():
 
     Start_game = input("PRESS (S) TO START GAME".center(70,"*"))
     if Start_game.strip().lower() == "s":
-        game.start_game = True
+        game.start_game = True 
         
     while game.start_game:
         game.make_a_guess() 
