@@ -105,7 +105,7 @@ class HigherLower:
                 return None
            
             if currenrt_card.is_joker_card():
-                print(f"{Indent}JOKER CARD! (current card replaced)\n")
+                print(f"{Indent}JOKER CARD!\n")
                 continue
             return currenrt_card
         
