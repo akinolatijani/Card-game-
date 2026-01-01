@@ -1,6 +1,15 @@
 from enum import Enum
 import random
+import time
 
+delay = 1
+Indent = " " * 70
+Astericks_Indent = " " * 35
+Rules_Indent = " " * 38
+
+
+def enter_button(message = "Press Enter to continue...."):
+    input(f"{Indent}\n" + message)
 
 #creating a class defining joker card and normal cards
 class Card_type(Enum):
@@ -98,51 +107,55 @@ class HigherLower:
     
     def make_a_guess(self):
     
-        print(f"Current card : {self.current_card.value.name} of {self.current_card.suit.value}")
-        print("\n TIME TO GUESS !".center(70),"\n") 
+        print(f"{Rules_Indent}Current card : {self.current_card.value.name} of {self.current_card.suit.value}")
+        time.sleep(delay)
+        print(f"\n{Rules_Indent}TIME TO GUESS !".center(100),"\n") 
+        time.sleep(2)
         
-        risk_raw = input("Risk Mode? (Y/N): ".center(70)).strip().lower()
+        risk_raw = input(f"{Indent}Risk Mode? (Y/N): ".center(100)).strip().lower()
         risk_mode = risk_raw in ("y", "yes")
 
-        raw_answer = input("Pick (H)Higher or (L)Lower: ".center(70)).strip().lower()
+        raw_answer = input(f"{Indent}Pick (H)Higher or (L)Lower: ".center(100)).strip().lower()
         if raw_answer in ("h","higher"):
             answer = "higher"
 
         elif raw_answer in ("l","lower"):
             answer = "lower"
         else:
-            print("\nInvalid input. Please type H/L or Higher/Lower.\n")
+            print("\n"+f"{Rules_Indent}Invalid input. Please type H/L or Higher/Lower.\n")
             return None 
         
-        print("\n You picked ",answer,"! Lets see if your right....\n")
-        
+        print("\n"+f"{Rules_Indent}You picked ",answer,"! Lets see if your right....")
+        time.sleep(2)
+
         next_card = self.card_deck.pick_a_card()
-        
-        curr = self.current_card.value.value
-        nxt= next_card.value.value
 
         if next_card is None:
-            print("Deck is empty...I Guess you WON! Kind of....")
+            print(f"{Indent}Deck is empty...I Guess you WON! Kind of....")
             self.start_game = False
             return None 
 
+
+        #ADD CONSEQUENCE LATER
         if next_card.is_joker_card():
-            print("\nJOKER CARD !\n")
+            print("\n"+f"{Indent}JOKER CARD !\n")
             self.current_card = self.card_deck.pick_a_card()
             return None 
+        
+        curr = self.current_card.value.value
+        nxt = next_card.value.value
 
         if curr == nxt:
-            print("\n STALEMATE! Values are equal.\n".center(70))
-            print("BONUS ROUND: Guess the color of the next card (R/B)".center(70))
+            print("\n"f"{Rules_Indent}STALEMATE! Values are equal.\n".center(100))
+            print(f"{Rules_Indent}BONUS ROUND: Guess the color of the next card (R/B)".center(100)+"\n")
 
-            color_guess = input("Pick (R)ed or (B)lack: ".center(60)).strip().lower()
+            color_guess = input(f"{Indent}Pick (R)ed or (B)lack: ".center(60)).strip().lower()
             if color_guess in ("r", "red"):
                 guessed_red = True
             elif color_guess in ("b", "black"):
                 guessed_red = False
             else:
-                print("\nInvalid input. No bonus/penalty applied.\n")
-                # choose: keep streak or reset it — I keep it unchanged here
+                print(f"{Rules_Indent}Invalid input. No bonus/penalty applied.\n")
                 self.current_card = next_card
                 return
 
@@ -150,10 +163,10 @@ class HigherLower:
 
             if guessed_red == actual_red:
                 self.points += 1
-                print("\n CORRECT COLOR! (+1 bonus point)\n".center(70))
+                print(f"{Indent}CORRECT COLOR! (+1 bonus point)\n".center(100))
             else:
                 self.lives -= 1
-                print("\n WRONG COLOR! (-1 life)\n".center(70))
+                print(f"{Indent}WRONG COLOR! (-1 life)\n".center(100))
 
             # move on to next round
             self.current_card = next_card
@@ -166,13 +179,16 @@ class HigherLower:
             correct_answer = "lower"
             self.check_guess(answer,correct_answer,next_card, risk_mode)
 
-        print("The card was",next_card.value.name,"of",next_card.suit.value)
+        time.sleep(delay)
+        print(f"{Rules_Indent}The card was",next_card.value.name,"of",next_card.suit.value)
 
         if self.lives <= 0: 
-            print("LIVES RAN OUT ! GAME OVER".center(70,"*"),"\n" ) 
+            print("\n"+Astericks_Indent + "*" * 100)
+            print(f"{Indent}LIVES RAN OUT ! GAME OVER".center(100,"*"),"\n" ) 
+
             self.start_game = False
         elif self.points >= 10:
-            print("YOU WON GAME ! CONGRATULATIONS".center(70,"*"),"\n" ) 
+            print(f"{Indent}YOU WON GAME ! CONGRATULATIONS".center(100,"*"),"\n" ) 
             self.start_game = False
 
         else:
@@ -181,7 +197,6 @@ class HigherLower:
 
     def check_guess(self,answer,correct_answer,next_card,risk_mode): 
         if (answer == correct_answer):
-            # self.points += 1
             self.streak += 1
            
             if self.streak >= 5:
@@ -193,14 +208,14 @@ class HigherLower:
             
             if next_card.value == Card_values.ACE:
                 gained *= 2
-                print("\n ACE BONUS! DOUBLE POINTS!\n".center(70)) 
+                print("\n"+f"{Indent} ACE BONUS! DOUBLE POINTS!\n".center(100)) 
     
             if risk_mode:
                 gained *= 2
-                print("\n RISK MODE WIN! Points doubled again!\n".center(70))
+                print("\n"+f"{Indent} RISK MODE WIN! Points doubled again!\n".center(100))
 
             self.points += gained
-            print(f"\n CORRECT! (+{gained} points)  Streak: {self.streak}\n".center(70))
+            print("\n"+f"{Indent} CORRECT! (+{gained} points)  Streak: {self.streak}\n".center(100))
 
         else:
             self.streak = 0
@@ -209,15 +224,15 @@ class HigherLower:
 
             if risk_mode:
                 self.lives -= 2
-                print("\n WRONG in RISK MODE! (-1 point, -2 lives)\n".center(70))
+                print("\n"+f"{Indent} WRONG in RISK MODE! (-1 point, -2 lives)\n".center(100))
             else:
                 self.lives -= 1
-                print("\n WRONG! (-1 point, -1 life)\n".center(70))
+                print("\n"+f"{Indent} WRONG! (-1 point, -1 life)\n".center(100))
  
 def main():
-    print("WELCOME TO HIGHER/LOWER".center(70, "*"),"\n")
-    print("INSTRUCTIONS OF THE GAME ".center(70,),"\n")
-    print("*" * 70)
+    print(f"{Indent}WELCOME TO HIGHER/LOWER".center(100, "*"),"\n")
+    print(f"{Indent}INSTRUCTIONS OF THE GAME ".center(100,),"\n")
+    print(Astericks_Indent + "*" * 100)
  
     rules = [
             "52-card deck + 2 Jokers",
@@ -232,23 +247,28 @@ def main():
     ]
      
     for rule in rules:
-        print(f"  • {rule}")
+        print(f"{Rules_Indent} • {rule}") 
+        time.sleep(delay) 
 
-    print("\n" + "HOW DO YOU WIN".center(70))
-    print("*" * 70,"\n")
-    print("  • Reach 10 points to WIN the game")
-    print("  • Bonus points can be earned through streaks, Risk Mode, and ACE cards\n")
+    enter_button("\n"+"Press to ENTER to see HOW DO YOU WIN".center(100))
+    print("\n" + f"{Indent}HOW DO YOU WIN".center(100))
+
+    print(Astericks_Indent + "*" * 100)
+    print(f"{Rules_Indent}  • Reach 10 points to WIN the game")
+    print(f"{Rules_Indent}  • Bonus points can be earned through streaks, Risk Mode, and ACE cards\n")
     
-    print("HOW DO YOU LOSE".center(70))
-    print("*" * 70,"\n")
-    print("  • You have 4 LIVES ****")
-    print("  • Lose all LIVES....GAME OVER \n")
-    print("*" * 70,"\n")
-    print("GOODLUCK !".center(70),"\n")
+    enter_button("\n"+"Press ENTER to see HOW YOU LOSE".center((100)))
+    print(f"{Indent}HOW DO YOU LOSE".center(100))
+
+    print("\n"+Astericks_Indent + "*" * 100)
+    print(f"{Rules_Indent}  • You have 4 LIVES ****")
+    print(f"{Rules_Indent}  • Lose all LIVES....GAME OVER \n")
+    print(Astericks_Indent + "*" * 100)
+    print(f"{Indent}GOODLUCK !".center(100),"\n")
 
     game = HigherLower()
 
-    Start_game = input("PRESS (S) TO START GAME".center(70,"*"))
+    Start_game = input(f"{Indent}PRESS (S) TO START GAME".center(100,"*"))
     if Start_game.strip().lower() == "s":
         game.start_game = True 
         
@@ -259,12 +279,13 @@ def main():
             break  
     
         lives,points = game.get_game_score()
-        
-        print("*" * 70)
-        print("NEXT ROUND !        YOUR SCORE:", points,
-            "\n                     YOUR LIVES:", lives)
-        print("*" * 70)
-    
+        time.sleep(delay)
+        print("\n"+Astericks_Indent + "*" * 100)
+        print(f"{Indent}NEXT ROUND !        YOUR SCORE:", points,
+            "\n"+f"{Indent}                     YOUR LIVES:", lives)
+        print(Astericks_Indent + "*" * 100)
+        time.sleep(2)
+     
        
    
 
