@@ -1,6 +1,7 @@
 from enum import Enum
 import random
 import time
+from art.text_images import Card_border,Card_side_border
 
 SCREEN_WIDTH = 100 
 BORDER = "*" * SCREEN_WIDTH
@@ -61,7 +62,8 @@ class Cards:
             return "JOKER"
         return f"{self.value.name} of {self.suit.value}"
          
-
+   # def display_card():
+       # return 
 class Deck_of_cards():
     def __init__(self):
         #loop through set of cards to create full deck of 52 cards
@@ -96,7 +98,7 @@ class HigherLower:
         self.card_deck = Deck_of_cards()
         self.card_deck.shuffle_deck()
         self.current_card = self.pick_new_card()
-        
+
         self.points = 0
         self.lives = 4
         self.start_game = False
@@ -248,6 +250,8 @@ def main():
     print_game_title("WELCOME TO HIGHER/LOWER")
     print_game_title("INSTRUCTIONS OF THE GAME")
     print_borderline()
+    print(Card_border)
+    print(Card_side_border)
 
     rules = [
                 "52-card deck + 2 Jokers",
