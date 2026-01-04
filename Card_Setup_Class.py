@@ -1,7 +1,7 @@
 from enum import Enum
 import random
 import time
-from art.text_images import Hearts_image,Diamonds_image,Clubs_image,Spades_image,Card_top_border, Card_side_border,Card_bottom_border,Card_side_with_value
+from art.text_images import Hearts_image,Diamonds_image,Clubs_image,Spades_image,Card_top_border, Card_side_border,Card_bottom_border,rules,Card_side_with_value
 
 SCREEN_WIDTH = 100 
 BORDER = "*" * SCREEN_WIDTH
@@ -66,23 +66,44 @@ class Cards:
         if self.is_joker_card():
             return "JOKER"
         return f"{self.value.name} of {self.suit.value}"
-         
+
     def display_card(self,card_value):
         value = self.value.value
         suit_symbol = self.suit.symbol
-        card_top_suit,card_bottom_suit,card_middle = Card_side_with_value(suit_symbol,value)
-       
-        print(f"{CARD_INDENT}",Card_top_border)
-        print(f"{CARD_INDENT}",card_top_suit)
-        for i in range(3):
-            print(f"{CARD_INDENT}",Card_side_border)
-        print(f"{CARD_INDENT}",card_middle)
-        for i in range(2):
-            print(f"{CARD_INDENT}",Card_side_border)
-        print(f"{CARD_INDENT}",card_bottom_suit)
-        print(f"{CARD_INDENT}",Card_bottom_border)
+        cursor_move   =  "\033[F"
+        cursor_erase  =  "\033[K"
+
+        card_top_suit, card_bottom_suit, card_middle = Card_side_with_value(value, suit_symbol)
+
+        card_lines = [
+            Card_top_border,
+            card_top_suit,
+            Card_side_border,
+            Card_side_border,
+            Card_side_border,
+            Card_side_border,  
+            Card_side_border,
+            Card_side_border,
+            card_bottom_suit,
+            Card_bottom_border
+        ]
+
+        for line in card_lines:
+            print(f"{CARD_INDENT}{line}")
+            time.sleep(0.5)
+
+        time.sleep(0.8)
+
+        lines_up = len(card_lines) - 4
+        for x in range(lines_up):
+            print(cursor_move, end="") 
+
+        print(cursor_erase, end="")
+        print(f"{CARD_INDENT}{card_middle}")
+
+        print("\n\n\n\n\n")
+
          
-    
 class Deck_of_cards():
     def __init__(self):
         #loop through set of cards to create full deck of 52 cards
@@ -210,7 +231,7 @@ class HigherLower:
         
         time.sleep(DELAY_SHORT)
         next_card.display_card(next_card.suit.value)
-        print(f"  {INDENT}The card was",next_card.value.name,"of",next_card.suit.label)
+        print(f"{INDENT}The card was",next_card.value.name,"of",next_card.suit.label)
 
         if curr < nxt: 
             correct_answer = "higher"
@@ -226,7 +247,10 @@ class HigherLower:
             return None
         
         elif self.points >= 10:
+            print("\n"+ASTERISKS_INDENT + BORDER)
             print(f"{INDENT}YOU WON GAME ! CONGRATULATIONS".center(SCREEN_WIDTH,"*"),"\n" ) 
+            print("\n"+ASTERISKS_INDENT + BORDER)
+
             self.start_game = False
             return None
 
@@ -267,17 +291,11 @@ class HigherLower:
                 print("\n"+f"{INDENT} WRONG! (-1 point, -1 life)\n".center(SCREEN_WIDTH))
  
 def main():
-    rules = [
-                "52-card deck + 2 Jokers",
-                "One card is drawn to start the game",
-                "Each round, guess Higher or Lower",
-                "Correct: +1 point | Wrong: -1 point and -1 life",
-                "Risk Mode (optional): double points or lose 2 lives",
-                "Streaks: 3 correct = +2, 5 correct = +3",
-                "ACE doubles points on a correct guess",
-                "Stalemate: guess Red/Black (+1 point or -1 life)",
-                "Joker: round is skipped and a new card is drawn"
-             ]
+    game = HigherLower()
+
+    print_game_title("WELCOME TO HIGHER OR LOWER GAME ")
+    print("\n"f"{INDENT}      GAME INSTRUCTIONS")
+    print("\n"+ASTERISKS_INDENT + BORDER)
      
     for rule in rules:
         print(f"{RULES_INDENT} • {rule}") 
@@ -298,10 +316,9 @@ def main():
     print_borderline()
 
     print(f"{INDENT}GOODLUCK !".center(SCREEN_WIDTH),"\n")
+    enter_button("Press ENTER to PLAY AGAIN".center((SCREEN_WIDTH)))
 
-    game = HigherLower()
-
-    Start_game = input(f"{INDENT}PRESS (S) TO START GAME".center(SCREEN_WIDTH,"*"))
+    Start_game = input(f"{INDENT}  PRESS (S) TO START GAME ")
     if Start_game.strip().lower() == "s":
         game.start_game = True 
         
@@ -315,14 +332,15 @@ def main():
         time.sleep(DELAY_SHORT)
 
         print("\n"+ASTERISKS_INDENT + BORDER)
-        print(
-                f"{INDENT}NEXT ROUND !                       YOUR SCORE: {points}\n"
-                f"{INDENT}                                    YOUR LIVES: {lives}"
+        print(  
+                f"{INDENT}NEXT ROUND !                          YOUR SCORE: {points}\n"
+                f"{INDENT}                                      YOUR LIVES: {lives}"
             )
         
         print(ASTERISKS_INDENT + BORDER)
         time.sleep(DELAY_LONG)
      
+    enter_button("Press ENTER to PLAY AGAIN".center((SCREEN_WIDTH)))
 
 if __name__ == "__main__":
     main()
