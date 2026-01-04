@@ -1,7 +1,7 @@
 from enum import Enum
 import random
 import time
-from art.text_images import Card_border,Card_side_border
+from art.text_images import Hearts_image,Diamonds_image,Clubs_image,Spades_image,Card_top_border, Card_side_border,Card_bottom_border,Card_side_with_value
 
 SCREEN_WIDTH = 100 
 BORDER = "*" * SCREEN_WIDTH
@@ -10,6 +10,7 @@ DELAY_LONG = 2
 INDENT = " " * 70
 ASTERISKS_INDENT  = " " * 35
 RULES_INDENT = " " * 38
+CARD_INDENT = " " * 75
 
 
 def enter_button(message = "Press Enter to continue...."):
@@ -26,12 +27,16 @@ class Card_type(Enum):
     JOKER = 2
 
 class Card_suits(Enum):
-    HEARTS = "Hearts"
-    DIA = "Diamonds"
-    CLUBS = "Clubs"
-    SPADES = "Spades"
+    HEARTS  = ("Hearts",Hearts_image)
+    DIA     = ("Diamonds",Diamonds_image)
+    CLUBS   = ("Clubs",Clubs_image)
+    SPADES  = ("Spades",Spades_image)
+    
+    def __init__(self, label, symbol):
+        self.label = label
+        self.symbol = symbol
 
-
+    
 class Card_values(Enum):
     TWO = 2 
     THREE = 3
@@ -49,7 +54,7 @@ class Card_values(Enum):
 
 
 class Cards: 
-    def __init__(self, card_suits = None, card_values=None,card_type = Card_type.NORMAL):
+    def __init__(self, card_suits = None, card_values=None, card_type = Card_type.NORMAL):
         self.suit = card_suits
         self.value = card_values
         self.card_type = card_type
@@ -62,8 +67,22 @@ class Cards:
             return "JOKER"
         return f"{self.value.name} of {self.suit.value}"
          
-   # def display_card():
-       # return 
+    def display_card(self,card_value):
+        value = self.value.value
+        suit_symbol = self.suit.symbol
+        card_top_suit,card_bottom_suit,card_middle = Card_side_with_value(suit_symbol,value)
+       
+        print(f"{CARD_INDENT}",Card_top_border)
+        print(f"{CARD_INDENT}",card_top_suit)
+        for i in range(3):
+            print(f"{CARD_INDENT}",Card_side_border)
+        print(f"{CARD_INDENT}",card_middle)
+        for i in range(2):
+            print(f"{CARD_INDENT}",Card_side_border)
+        print(f"{CARD_INDENT}",card_bottom_suit)
+        print(f"{CARD_INDENT}",Card_bottom_border)
+         
+    
 class Deck_of_cards():
     def __init__(self):
         #loop through set of cards to create full deck of 52 cards
@@ -125,7 +144,7 @@ class HigherLower:
         return self.lives,self.points
     
     def make_a_guess(self):
-        print(f"{RULES_INDENT}Current card : {self.current_card.value.name} of {self.current_card.suit.value}")
+        print(f"{RULES_INDENT}Current card : {self.current_card.value.name} of {self.current_card.suit.label}")
         time.sleep(DELAY_SHORT)
 
         print(f"\n{INDENT}TIME TO GUESS !".center(SCREEN_WIDTH),"\n") 
@@ -189,15 +208,16 @@ class HigherLower:
             self.current_card = next_card
             return None
         
+        time.sleep(DELAY_SHORT)
+        next_card.display_card(next_card.suit.value)
+        print(f"  {INDENT}The card was",next_card.value.name,"of",next_card.suit.label)
+
         if curr < nxt: 
             correct_answer = "higher"
             self.check_guess(answer,correct_answer,next_card, risk_mode)
         elif curr > nxt: 
             correct_answer = "lower"
             self.check_guess(answer,correct_answer,next_card, risk_mode)
-
-        time.sleep(DELAY_SHORT)
-        print(f"{RULES_INDENT}The card was",next_card.value.name,"of",next_card.suit.value)
 
         if self.lives <= 0: 
             print("\n"+ASTERISKS_INDENT + BORDER)
@@ -247,12 +267,6 @@ class HigherLower:
                 print("\n"+f"{INDENT} WRONG! (-1 point, -1 life)\n".center(SCREEN_WIDTH))
  
 def main():
-    print_game_title("WELCOME TO HIGHER/LOWER")
-    print_game_title("INSTRUCTIONS OF THE GAME")
-    print_borderline()
-    print(Card_border)
-    print(Card_side_border)
-
     rules = [
                 "52-card deck + 2 Jokers",
                 "One card is drawn to start the game",
