@@ -1,4 +1,3 @@
-from enum import Enum
 import time
 import game.ui as ui
 from game.deck import Deck_of_cards
@@ -193,7 +192,7 @@ def main():
         if play_again != "p":
             break
 
-    ui.print_game_title("Thanksfor playing my game ! Hope you enjoyed !")
+    ui.print_game_title("Thanks for playing my game ! Hope you enjoyed !")
  
     
 
@@ -202,6 +201,4 @@ if __name__ == "__main__":
 
 
 
-    ##I NEED TO ADD WAY TO RELOOP GAME IF WON/LOST OR FINISHED
-    ## NEED TO CLEAN UP CODE STRUCTURE AND SYNTAX
     ## ADD COMMENTS TO CODE AND CREATE READ ME
