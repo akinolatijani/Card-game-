@@ -38,7 +38,7 @@ class HigherLower:
 
         if self.current_card is None:
             self.start_game = False
-            return None
+            return False
 
         print("\n",f"{RULES_INDENT}Current card : {self.current_card.value.name} of {self.current_card.suit.label}")
         time.sleep(ui.DELAY_SHORT)
@@ -47,6 +47,9 @@ class HigherLower:
         time.sleep(ui.DELAY_LONG)
         
         risk_raw = input(f"{INDENT}Risk Mode? (Y/N): ".center(ui.SCREEN_WIDTH)).strip().lower()
+        if risk_raw not in ("y","yes","no","n"):
+            print("\n"+f"{RULES_INDENT}Invalid input. Yes/No or Y/N: \n")
+
         risk_mode = risk_raw in ("y", "yes")
 
         raw_answer = input(f"{INDENT}Pick (H)Higher or (L)Lower: ".center(ui.SCREEN_WIDTH)).strip().lower()
@@ -64,9 +67,9 @@ class HigherLower:
         next_card = self.card_deck.pick_a_card()
 
         if next_card is None:
-            print(f"{INDENT}Deck is empty...I Guess you WON! Kind of....")
+            print(f"{INDENT}Deck is empty.I Guess you WON! Kind of....")
             self.start_game = False
-            return None 
+            return False 
 
         #ADD CONSEQUENCE LATER
         if next_card.is_joker_card():
@@ -79,9 +82,7 @@ class HigherLower:
 
         if curr == nxt:
             print("\n"f"{RULES_INDENT}STALEMATE! Values are equal.\n".center(ui.SCREEN_WIDTH))
-            print(f"{RULES_INDENT}BONUS ROUND: Guess the color of the next card (R/B)".center(
-                
-            )+"\n")
+            print(f"{RULES_INDENT}BONUS ROUND: Guess the color of the card (R/B)".center()+"\n")
 
             color_guess = input(f"{INDENT}Pick (R)ed or (B)lack: ".center(60)).strip().lower()
             if color_guess in ("r", "red"):
@@ -105,6 +106,7 @@ class HigherLower:
             self.current_card = next_card
             return True
         
+        
         time.sleep(ui.DELAY_SHORT)
         ui.display_card(next_card.value.value,next_card.suit.symbol)
         print(f"{INDENT}The card was",next_card.value.name,"of",next_card.suit.label)
@@ -117,16 +119,17 @@ class HigherLower:
             print(f"{INDENT}LIVES RAN OUT ! GAME OVER".center(ui.SCREEN_WIDTH),"\n" ) 
             ui.print_borderline()
             self.start_game = False
-            return None
+            return False
         
         if self.points >= 10:
             ui.print_borderline()
             print(f"{INDENT}YOU WON GAME ! CONGRATULATIONS".center(ui.SCREEN_WIDTH),"\n" ) 
             ui.print_borderline()
             self.start_game = False
-            return None 
+            return False 
 
         self.current_card = next_card
+        return True
 
     def check_guess(self,answer,correct_answer, next_card, risk_mode): 
         if (answer == correct_answer):
@@ -180,9 +183,7 @@ def main():
         game.start_game = True 
             
         while game.start_game:
-            game.make_a_guess(ui.RULES_INDENT, ui.INDENT) 
-            
-            if not game.start_game:
+            if game.make_a_guess(ui.RULES_INDENT, ui.INDENT) is False:
                 break  
         
             lives, points = game.get_game_score()
