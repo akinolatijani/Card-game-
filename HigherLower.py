@@ -1,6 +1,6 @@
 import time
 import game.ui as ui
-from game.deck import Deck_of_cards
+from game.Deck import Deck_of_cards
      
 class HigherLower:
     def __init__(self):

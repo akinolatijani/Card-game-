@@ -1,6 +1,6 @@
 import random
-from game.card import Cards
-from game.enums import Card_suits, Card_values, Card_type
+from game.Card import Cards
+from game.Enums import Card_suits, Card_values, Card_type
 
 class Deck_of_cards():
     def __init__(self):

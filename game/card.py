@@ -1,4 +1,4 @@
-from game.enums import Card_type
+from game.Enums import Card_type
  
 class Cards: 
     def __init__(self, card_suits = None, card_values=None, card_type = Card_type.NORMAL):
