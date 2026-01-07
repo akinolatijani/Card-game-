@@ -1,6 +1,7 @@
 import time
 import game.ui as ui
 from game.Deck import Deck_of_cards
+from art.text_images import make_empty_grid
      
 class HigherLower:
     def __init__(self):
@@ -169,10 +170,11 @@ class HigherLower:
     
 def main():
     ui.print_game_title("WELCOME TO HIGHER OR LOWER GAME ")
+    make_empty_grid(3, cell_width=15, cell_height=8)
     ui.print_game_title("GAME INSTRUCTIONS")
     ui.print_rules(ui.RULES)
     ui.print_game_info()
-    
+
     while True:
         game = HigherLower()
 

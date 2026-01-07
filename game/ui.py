@@ -24,6 +24,7 @@ RULES = [
             "Stalemate: guess Red/Black (+1 point or -1 life)",
             ]
 
+
 def display_card(value, suit_symbol):
     cursor_move   =  "\033[F"
     cursor_erase  =  "\033[K"
@@ -44,6 +45,7 @@ def display_card(value, suit_symbol):
     print(f"{CARD_INDENT}{suit_lines}")
 
     print("\n\n\n\n\n")
+
 
 def enter_button(message = "Press Enter to continue...."):
     input(f"{INDENT}\n" + message)
@@ -85,3 +87,5 @@ def print_round_summary(points, lives):
         )
     print_borderline()
     time.sleep(DELAY_LONG)
+
+        
