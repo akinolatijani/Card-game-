@@ -1,7 +1,6 @@
 import time
 import game.ui as ui
 from game.Deck import Deck_of_cards
-from art.text_images import make_empty_grid
      
 class HigherLower:
     def __init__(self):
@@ -12,8 +11,11 @@ class HigherLower:
         self.points = 0
         self.lives = 1
         self.streak = 0
+        self.round_num = 0
         self.start_game = False
 
+    def get_round_num(self):
+        return self.round_num 
 
     def pick_new_card(self):
         while True:
@@ -105,6 +107,7 @@ class HigherLower:
                 print(f"{INDENT}WRONG COLOR! (-1 life)\n".center(ui.SCREEN_WIDTH))
 
             self.current_card = next_card
+            self.round_num += 1
             return True
         
         
@@ -168,9 +171,9 @@ class HigherLower:
         return None
     
     
-def main():
+
+def game_A_main():
     ui.print_game_title("WELCOME TO HIGHER OR LOWER GAME ")
-    make_empty_grid(3, cell_width=15, cell_height=8)
     ui.print_game_title("GAME INSTRUCTIONS")
     ui.print_rules(ui.RULES)
     ui.print_game_info()
@@ -189,18 +192,14 @@ def main():
                 break  
         
             lives, points = game.get_game_score()
-            ui.print_round_summary(points, lives)
+            ui.print_round_summary(points, lives,game.get_round_num())
         
         play_again = input("PRESS (P) to PLAY AGAIN".center((ui.SCREEN_WIDTH))).strip().lower()
         if play_again != "p":
             break
 
-    ui.print_game_title("Thanks for playing my game ! Hope you enjoyed !")
- 
-    
+        ui.print_game_title("Thanks for playing my game ! Hope you enjoyed !")
 
-if __name__ == "__main__":
-    main()
 
 
 

@@ -1,3 +1,5 @@
+import game.ui as ui
+
 card_top_left        = "\u250C"
 card_top_right       = "\u2510" 
 card_botton_left     = "\u2514"
@@ -60,22 +62,22 @@ def print_card_grid(size, cells):
     cell_height = len(cells[0])              
     cell_width = len(cells[0][0]) - 2      
 
-    print(grid_top(size, cell_width))
+    print(ui.INDENT+grid_top(size, cell_width))
 
     for r in range(size):   
         row_cells = cells[r*size:(r+1)*size]
 
         for line_i in range(cell_height):
-            print(
+            print(ui.INDENT+
                 card_vertical_line +
                 card_vertical_line.join(row_cells[c][line_i] for c in range(size)) +
                 card_vertical_line
             )
 
         if r != size - 1:
-            print(grid_middle(size, cell_width))
+            print(ui.INDENT+grid_middle(size, cell_width))
 
-    print(grid_bottom(size, cell_width))
+    print(ui.INDENT+grid_bottom(size, cell_width))
 
 
 Card_top_border = card_top_left + (card_horizontal_line*17) + card_top_right 

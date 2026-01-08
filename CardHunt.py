@@ -3,6 +3,7 @@ from game.Deck import Deck_of_cards
 from game.Enums import Card_type
 from art.text_images import print_card_grid, make_card_border,make_grid_card
 import random
+import game.ui as ui
 
 class CardHunt: 
     def __init__(self ,size=3):
@@ -11,6 +12,9 @@ class CardHunt:
         self.size = size 
         self.round_num = 0
         self.start_game = False
+
+        self.lives = 15
+        self.points = 0
 
         self.grid_cards = []
         self.grid_cells = [] 
@@ -23,15 +27,19 @@ class CardHunt:
         empty_lines,_ = make_card_border(card_value,suit_symbol)
         self.grid_cells[index] = make_grid_card(empty_lines, "CORRECT")
 
-
     def show_grid(self):
-        print(f"\n ROUND {self.round_num} ")
         print_card_grid(self.size, self.grid_cells)
         print(f"Cards left in deck: {len(self.card_deck.cards)}")
 
     def remaining_cards(self):
          return sum(1 for cards in self.card_deck.cards if cards.card_type != Card_type.JOKER)
    
+    def get_game_score(self):
+        return self.lives,self.points
+    
+    def get_round_num(self):
+        return self.round_num
+    
     def new_round(self):
         needed = self.size **2
         cards_found = [] 
@@ -42,36 +50,44 @@ class CardHunt:
         
         self.round_num += 1
         self.card_deck.shuffle_deck()
-        self.populate_grid()
+        
+        if not self.populate_grid():
+            self.start_game = False
+            return False
+            
         self.show_grid()
 
-        while True:
-            while len(cards_found) <= 9:
-                current_card_Index = random.randint(0,8)
+        while len(cards_found) < needed:
+            current_card_Index = random.randint(0,needed - 1)
 
-                if not current_card_Index in cards_found:
-                    cards_found.append(current_card_Index) 
+            if  current_card_Index in cards_found:
+                continue
+            cards_found.append(current_card_Index) 
 
-                    answer = input(f"Guess cell for :{self.grid_cards[current_card_Index]}: ")
-                    self.show_grid()
+            answer = input(f"      {ui.RULES_INDENT}Guess cell for {self.grid_cards[current_card_Index].value.name} of {self.grid_cards[current_card_Index].suit.label}: ").strip()
+    
+            if answer == str(current_card_Index+1):
+                self.points += 1
+                print(f"{ui.INDENT}CORRECT GUESS !\n")
+                self.reveal_card(current_card_Index)
+            else:
+                self.lives -= 1
+                print(f"\n{ui.INDENT}INCORRECT !\n")  
+            
+            ui.print_round_summary(self.points, self.lives, self.get_round_num())
+            self.show_grid()   
 
-                    if answer == str(current_card_Index+1).strip():
-
-                        print("CORRECT GUESS !")
-                        self.reveal_card(current_card_Index)
-                        self.show_grid()
-
-                    else:
-                        print("INCORRECT")
-                        self.show_grid()
-
-
+            if self.lives <= 0:
+                ui.print_borderline()
+                print(f"        {ui.INDENT}LIVES RAN OUT! GAME OVER !\n")
+                self.start_game = False
+                return False
+        
+        return True
 
     def populate_grid(self):
         self.grid_cards = []
         self.grid_cells = []
-
-        print("TESTINGGGG 2")
 
         needed = self.size ** 2
 
@@ -82,7 +98,7 @@ class CardHunt:
                 if card is None:
                     print("Deck is empty while populating the grid.")
                     self.start_game = False
-                    return
+                    return False
 
                 if card.card_type == Card_type.JOKER:
                     continue
@@ -91,14 +107,35 @@ class CardHunt:
                 suit_symbol = card.suit.value[1]
 
                 empty_lines, _ = make_card_border(card_value, suit_symbol)
-
-                #grid_card_lines = make_grid_card(empty_lines, "?")
-                #grid_card_lines = make_grid_card(empty_lines, card_value)
                 grid_card_lines = make_grid_card(empty_lines, grid_number)
 
                 self.grid_cards.append(card)
                 self.grid_cells.append(grid_card_lines)
-
                 break
 
+        return True
     
+def game_B_main():
+       while True:
+        game = CardHunt(size=3)
+        ui.print_game_title("WELCOME TO GUESS THE CARD ")
+        ui.print_game_title("GAME INSTRUCTIONS")
+        ui.print_borderline()
+        ui.print_game_info()
+
+        Start_game = input(f"{ui.INDENT}  PRESS (S) TO START GAME ").strip().lower()
+        if Start_game == "s":
+            game.start_game = True
+    
+        while game.start_game:
+            if not game.new_round():
+                break
+            lives,points = game.get_game_score()
+
+            ui.print_round_summary(points, lives, game.get_round_num())
+
+        play_again = input("PRESS (P) to PLAY AGAIN".center((ui.SCREEN_WIDTH))).strip().lower()
+        if play_again != "p":
+            break
+            
+        ui.print_game_title("Thanks for playing my game ! Hope you enjoyed !")

@@ -54,7 +54,7 @@ def print_borderline():
     print(ASTERICKS_INDENT + BORDER)
 
 def print_game_title(text):
-    print(f"{INDENT}{text}".center(SCREEN_WIDTH),"\n")
+    print(f"         {INDENT}{text}".center(SCREEN_WIDTH),"\n")
 
 def print_rules(rules):
     print_borderline()
@@ -65,13 +65,13 @@ def print_rules(rules):
 
 def print_game_info():
     enter_button("\n"+"Press to ENTER to see HOW DO YOU WIN".center(SCREEN_WIDTH))
-    print("\n" + f"{INDENT}HOW DO YOU WIN".center(SCREEN_WIDTH))
+    print("\n" + f"{INDENT}HOW DO YOU WIN\n".center(SCREEN_WIDTH))
     print_borderline()
     print(f"{RULES_INDENT}  • Reach 10 points to WIN the game")
     print(f"{RULES_INDENT}  • Bonus points can be earned through streaks, Risk Mode, and ACE cards\n")
     
     enter_button("Press ENTER to see HOW YOU LOSE".center((SCREEN_WIDTH)))
-    print("\n"+  (INDENT + "HOW DO YOU LOSE").center(SCREEN_WIDTH))
+    print("\n"+  (INDENT + "HOW DO YOU LOSE\n").center(SCREEN_WIDTH))
     print_borderline()
     print(f"{RULES_INDENT}  • You have 4 LIVES ****")
     print(f"{RULES_INDENT}  • Lose all LIVES....GAME OVER \n")
@@ -79,11 +79,11 @@ def print_game_info():
 
     print_borderline()
 
-def print_round_summary(points, lives):
-    print_borderline()
+def print_round_summary(points, lives, round_num):
+    print_borderline() 
     print(  
-            f"{INDENT}NEXT ROUND !                          YOUR SCORE: {points}\n"
-            f"{INDENT}                                      YOUR LIVES: {lives}"
+            f"{INDENT} ROUND {round_num}                                   YOUR SCORE: {points}\n"
+            f"{INDENT}                                           YOUR LIVES: {lives}"
         )
     print_borderline()
     time.sleep(DELAY_LONG)
