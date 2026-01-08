@@ -5,19 +5,24 @@ from art.text_images import print_card_grid
 from CardHunt import CardHunt
 
 def main():
+    game = CardHunt(size=3)
     ui.print_game_title("WELCOME TO GUESS THE CARD ")
     ui.print_game_title("GAME INSTRUCTIONS")
     #ui.print_rules(ui.RULES)
     ui.print_game_info()
 
-    
-    game = CardHunt(size=3)
-    game.populate_grid()
-
-    print_card_grid(3, game.grid_cells)
 
     Start_game = input(f"{ui.INDENT}  PRESS (S) TO START GAME ").strip().lower()
+    if Start_game == "s":
+        game.start_game = True
+    
+    while game.start_game:
+        if not game.new_round():
+            print("Deck is finished")
         
+        game.show_grid()
+    
+
 
     """game.start_game = True 
         
