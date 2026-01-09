@@ -2,88 +2,78 @@
 
 ## Project Scope 
 
-It was originally designed as a Higher / Lower card game, but was later extended with an alternative game mode to demonstrate flexibility, reuse of core logic, and design thinking.
+This project was initially designed as a Higher / Lower card game and was later extended with an alternative game mode to demonstrate how a single, reusable card system could support multiple gameplay styles.
 
-The project uses a standard 52-card deck with the addition of two Joker cards.
-Both games are played entirely in the terminal using a text-based user interface, with an emphasis on clean structure, extensibility, and readable output rather than graphical complexity.
+The project uses a standard 52-card deck with the addition of two Joker cards. Both games are played entirely in the terminal using a text-based user interface. The focus was on producing clear, maintainable logic and extensible design rather than graphical complexity.
 
-The goal of this project was not only to meet the functional requirements, but also to show thoughtful software design, particularly around object-oriented programming, separation of concerns, and future scalability.
+The primary aim of this project was to demonstrate decision-making around structure, extensibility, and responsibility boundaries, rather than maximising feature count.
 
 ## Design Decisons 
 
-- The core requirements of the project included:
+The core requirements of the project were intentionally implemented first, before introducing extensions:
 
-- Modelling a standard deck of cards
+A standard deck abstraction to avoid duplicating card logic
 
-- Implementing shuffling and safe card drawing
+A controlled shuffling and drawing mechanism to prevent invalid game states
 
-- Defining clear game rules
+Explicit rule handling to keep gameplay predictable and testable
 
-- Building a playable CLI interface
+A CLI-based interface to prioritise logic clarity over presentation
 
-Beyond these requirements, the project was extended to include:
+Beyond these requirements, the project was extended with the following decisions in mind:
 
-- Two Joker cards with special handling
+Joker cards were added to introduce non-linear outcomes and force explicit handling of exceptional states
 
-- A reusable deck and card model shared across multiple games
+A shared deck and card model was used to ensure both games relied on the same core logic, reducing duplication
 
-- A second game mode (Card Hunt) using the same card and deck logic
+A second game mode (Card Hunt) was implemented to validate that the card and deck abstractions were flexible enough to support alternative rules
 
-- A structured UI layer to separate presentation from game logic
+A separate UI module was introduced to avoid embedding formatting and presentation logic directly into game rules
 
-OOP in this project would:
-- Reduced repetition when handling cards and the deck
-
-- Clear separation between game logic and card logic
-
-- Easier debugging and future improvements
-
-- Better organisation as the project grew in complexity
-
-For implementation the game was setup with classes with its own set of responsiblities.
+The main trade-off of this approach is increased upfront structure for a relatively small project. This was considered acceptable in order to demonstrate scalability and reasoning rather than minimalism.
 
 ## OOP(Object- Orientated Programming) Approach
 
-The project was implemented using Object-Oriented Programming (OOP). This approach was chosen because it maps naturally to the domain of a card game, where cards, decks, and the game itself each have distinct responsibilities.
+Object-Oriented Programming was chosen because it aligns naturally with the problem domain and allows behaviour to be grouped with the data it operates on.
 
-Using OOP allowed the project to:
+Rather than focusing on OOP principles in isolation, this project uses OOP to:
 
-- Reduce repetition when handling cards and decks
+Enforce clear ownership of responsibilities
 
-- Keep card logic separate from game rules
+Limit how and where card state can be modified
 
-- Make the code easier to debug and reason about
+Make it easier to introduce new game modes without altering existing logic
 
-- Support additional features without major refactoring
-
+An alternative procedural approach would have reduced boilerplate but would have made reuse across multiple games more error-prone.
 
 ## Class Structure: 
 
 ### Cards Class
-This class was developed for representing single playing card e.g 5 of Spades
+The Cards class represents a single playing card and acts as a simple data holder with minimal behaviour.
 
-The Cards holds:
-- A suit 
-- A vaue 
-- Card Type (e.g. Normal or Joker Card)
+This design was chosen to:
 
-This highlights the suitabilty of OOP as it allowed the storage of the attributes within the class 
-Any card logic would be maintained within one place .
+   - Keep card state immutable during gameplay
+
+   - Avoid spreading suit/value logic across multiple files
+
+   - Make Joker handling explicit via a dedicated card type
+
+More complex behaviour (such as scoring) was deliberately kept out of this class to avoid mixing responsibilities.
 
 ### Deck_of_cards Class
 
-The class represents the full deck of 52 cards in the game 
+The deck class owns the lifecycle of all cards and is the only component allowed to create, shuffle, or remove cards from play.
 
-Responsibilities:
-- Create a standard 52-card deck
+This prevents:
 
-- Add 2 Joker cards
+- Games directly manipulating the underlying card collection
 
-- Shuffling the deck
+- Accidental reuse of cards already drawn
 
-- Safely draw cards from the deck
+- Inconsistent shuffling behaviour across different game modes
 
-Separating deck logic into its own class ensures that the game logic does not directly manipulate card collections, which helps prevent invalid states and simplifies future extensions.
+The trade-off is that games must interact with the deck through a fixed interface, slightly reducing flexibility in favour of safety.
 
 ## Game Modes
 
@@ -113,11 +103,16 @@ This class component was key for contorlling the game, coordinating interactions
 
 ### Pick_new_card() 
 
-This function was key ensuring the joker cards were handled consistently 
+This method exists to ensure Joker handling is consistent and does not leak into multiple areas of the game logic.
+
+By centralising this behaviour, rule changes affecting Jokers can be made in one place without modifying round logic.
 
 ### make_a_guess() 
 
 This method represents a single round of gameplay and acts as the main game loop step.
+
+Although the method is longer than ideal, this was a conscious decision to keep the full round lifecycle visible in one place, making the flow easier to reason about during debugging.
+
 - It handles:
 
 - User input (including validation)
@@ -168,10 +163,13 @@ The reason for developing this game mode demonstrated:
 
 ### populate_grid()
 
-Builds a grid using remaining cards from the deck while skipping Joker cards.
-Ensures that a new round only starts if enough cards are available.
+This method ensures that a round only starts when enough valid cards remain, preventing partial or invalid grids.
+
+Skipping Joker cards here avoids introducing special cases into the guessing logic.
 
 ### new_round()
+
+This method separates round progression from overall game lifecycle management.
 
 - Controls round progression:
 
