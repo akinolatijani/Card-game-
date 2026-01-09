@@ -3,15 +3,16 @@ from game.Card import Cards
 from game.Enums import Card_suits, Card_values, Card_type
 
 class Deck_of_cards():
-    def __init__(self):
+    def __init__(self, include_jokers=False):
+
         #loop through set of cards to create full deck of 52 cards
         self.cards = [ Cards(suit,value, Card_type.NORMAL) 
             for suit in  Card_suits
             for value in Card_values ]
 
-        for i in range(0,2):
-            self.cards.append((Cards(card_type=Card_type.JOKER)))
-
+        if include_jokers:
+            self.cards.extend(Cards(card_type=Card_type.JOKER) for x in range(2)) 
+ 
     #Method for shuffling deck of cards
     def shuffle_deck(self):
         num = 1

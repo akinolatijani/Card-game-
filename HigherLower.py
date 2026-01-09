@@ -4,12 +4,12 @@ from game.Deck import Deck_of_cards
      
 class HigherLower:
     def __init__(self):
-        self.card_deck = Deck_of_cards()
+        self.card_deck = Deck_of_cards(include_jokers=True)
         self.card_deck.shuffle_deck()
         self.current_card = self.pick_new_card()
 
         self.points    = 0
-        self.lives     = 1
+        self.lives     = 4
         self.streak    = 0
         self.round_num = 0
         self.start_game = False
@@ -49,22 +49,27 @@ class HigherLower:
         print(f"\n{INDENT}TIME TO GUESS !".center(ui.SCREEN_WIDTH),"\n") 
         time.sleep(ui.DELAY_LONG)
         
-        risk_raw = input(f"{INDENT}Risk Mode? (Y/N): ".center(ui.SCREEN_WIDTH)).strip().lower()
-        if risk_raw not in ("y","yes","no","n"):
+        while True:
+            risk_raw = input(f"{INDENT}Risk Mode? (Y/N): ".center(ui.SCREEN_WIDTH)).strip().lower()
+            if risk_raw  in ("y", "yes"):
+                risk_mode = True
+                break
+            if risk_raw  in ("n", "no"):
+                risk_mode = False
+                break
             print("\n"+f"{RULES_INDENT}Invalid input. Yes/No or Y/N: \n")
 
-        risk_mode = risk_raw in ("y", "yes")
-
-        raw_answer = input(f"{INDENT}Pick (H)Higher or (L)Lower: ".center(ui.SCREEN_WIDTH)).strip().lower()
-        if raw_answer in ("h","higher"):
-            answer = "higher"
-        elif raw_answer in ("l","lower"):
-            answer = "lower"
-        else:
+        while True:
+            raw_answer = input(f"{INDENT}Pick (H)Higher or (L)Lower: ".center(ui.SCREEN_WIDTH)).strip().lower()
+            if raw_answer in ("h","higher"):
+                answer = "higher"
+                break
+            if raw_answer in ("l","lower"):
+                answer = "lower"
+                break
             print("\n"+f"{RULES_INDENT}Invalid input. Please type H/L or Higher/Lower.\n")
-            return True 
         
-        print("\n"+f"{RULES_INDENT}You picked ",answer,"! Lets see if your right....")
+            print("\n"+f"{RULES_INDENT}You picked ",answer,"! Lets see if your right....")
         time.sleep(1)
 
         next_card = self.card_deck.pick_a_card()
