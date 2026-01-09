@@ -1,6 +1,6 @@
 import random
 from game.Card import Cards
-from game.Deck import Deck_of_cards
+from game.Deck import Deck
 from game.Enums import Card_type
 from art.text_images import print_card_grid, make_card_border,make_grid_card
 import game.ui as ui
@@ -9,7 +9,7 @@ from game.Config import (CARDHUNT_DEFAULT_GRID_SIZE, CARDHUNT_STARTING_LIVES, CA
 
 class CardHunt: 
     def __init__(self ,size=3):
-        self.card_deck = Deck_of_cards(include_jokers=False)
+        self.card_deck = Deck(include_jokers=False)
         self.card_deck.shuffle_deck()
         self.size = size 
        
@@ -122,7 +122,7 @@ class CardHunt:
 
         return True
     
-def game_B_main():
+def game_b_main():
        while True:
         game = CardHunt(size =CARDHUNT_DEFAULT_GRID_SIZE)
         ui.print_game_title("WELCOME TO GUESS THE CARD ")

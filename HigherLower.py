@@ -1,6 +1,6 @@
 import time
 import game.ui as ui
-from game.Deck import Deck_of_cards
+from game.Deck import Deck
 from game.Config import (STREAK_BONUS_3,
                             STREAK_BONUS_5,
                             BASE_POINTS,
@@ -12,7 +12,7 @@ from game.Config import (STREAK_BONUS_3,
      
 class HigherLower:
     def __init__(self):
-        self.card_deck = Deck_of_cards(include_jokers=True)
+        self.card_deck = Deck(include_jokers=True)
         self.card_deck.shuffle_deck()
         self.current_card = self.pick_new_card()
 
@@ -187,7 +187,7 @@ class HigherLower:
     
     
 
-def game_A_main():
+def game_a_main():
     ui.print_game_title("WELCOME TO HIGHER OR LOWER GAME ")
     ui.print_game_title("GAME INSTRUCTIONS")
     ui.print_rules(ui.RULES)
@@ -216,6 +216,3 @@ def game_A_main():
         ui.print_game_title("Thanks for playing my game ! Hope you enjoyed !")
 
 
-
-
-    ## ADD COMMENTS TO CODE 

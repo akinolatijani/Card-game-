@@ -3,7 +3,7 @@ from game.Enums import Card_suits, Card_values, Card_type
 import random
 
 
-class Deck_of_cards():
+class Deck():
     def __init__(self, include_jokers=False):
 
         #loop through set of cards to create full deck of 52 cards

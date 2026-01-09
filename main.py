@@ -1,5 +1,5 @@
-from HigherLower import game_A_main
-from CardHunt import game_B_main
+from HigherLower import game_a_main
+from CardHunt import game_b_main
 import game.ui as ui
 
 def main():
@@ -9,10 +9,10 @@ def main():
         ui.print_borderline()
         
         if choose_game == "a":
-            game_A_main()
+            game_a_main()
             return
         elif choose_game == "b":
-            game_B_main()
+            game_b_main()
             return
         else:
             print(f"{ui.INDENT}Invalid choice. Type A or B \n")
