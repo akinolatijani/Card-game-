@@ -1,10 +1,11 @@
+import random
 from game.Card import Cards
 from game.Deck import Deck_of_cards
 from game.Enums import Card_type
 from art.text_images import print_card_grid, make_card_border,make_grid_card
-import random
 import game.ui as ui
 import time 
+from game.Config import (CARDHUNT_DEFAULT_GRID_SIZE, CARDHUNT_STARTING_LIVES, CARDHUNT_POINTS_PER )
 
 class CardHunt: 
     def __init__(self ,size=3):
@@ -12,7 +13,7 @@ class CardHunt:
         self.card_deck.shuffle_deck()
         self.size = size 
        
-        self.lives = 4
+        self.lives = CARDHUNT_STARTING_LIVES
         self.points = 0
 
         self.round_num = 0
@@ -69,7 +70,7 @@ class CardHunt:
             answer = input(f"      {ui.RULES_INDENT}Guess cell for {self.grid_cards[current_card_Index].value.name} of {self.grid_cards[current_card_Index].suit.label}: ").strip()
     
             if answer == str(current_card_Index+1):
-                self.points += 1
+                self.points += CARDHUNT_POINTS_PER
                 print(f"{         ui.INDENT}CORRECT GUESS !\n")
                 self.reveal_card(current_card_Index, "CORRECT")
                 self.show_grid()   
@@ -123,7 +124,7 @@ class CardHunt:
     
 def game_B_main():
        while True:
-        game = CardHunt(size=3)
+        game = CardHunt(size =CARDHUNT_DEFAULT_GRID_SIZE)
         ui.print_game_title("WELCOME TO GUESS THE CARD ")
         ui.print_game_title("GAME INSTRUCTIONS")
         ui.print_borderline()

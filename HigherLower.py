@@ -1,6 +1,14 @@
 import time
 import game.ui as ui
 from game.Deck import Deck_of_cards
+from game.Config import (STREAK_BONUS_3,
+                            STREAK_BONUS_5,
+                            BASE_POINTS,
+                            ACE_MULTIPLIER,
+                            RISK_MULTIPLIER,
+                            RISK_LIFE_PENALTY,
+                            NORMAL_LIFE_PENALTY
+)
      
 class HigherLower:
     def __init__(self):
@@ -145,18 +153,18 @@ class HigherLower:
             self.streak += 1
            
             if self.streak >= 5:
-                gained = 3
+                gained = STREAK_BONUS_5
             elif self.streak >= 3:
-                gained = 2
+                gained = STREAK_BONUS_3
             else:
-                gained = 1 
+                gained = BASE_POINTS
             
             if next_card.value.name == "ACE":
-                gained *= 2
+                gained *= ACE_MULTIPLIER
                 print("\n"+f"{ui.INDENT} ACE BONUS! DOUBLE POINTS!\n".center(ui.SCREEN_WIDTH)) 
     
             if risk_mode:
-                gained *= 2
+                gained *= RISK_MULTIPLIER
                 print("\n"+f"{ui.INDENT} RISK MODE WIN! Points doubled again!\n".center(ui.SCREEN_WIDTH))
 
             self.points += gained
@@ -165,13 +173,13 @@ class HigherLower:
         
         
         self.streak = 0
-        self.points -= 1
+        self.points -= BASE_POINTS
 
         if risk_mode:
-            self.lives -= 2
+            self.lives -= RISK_LIFE_PENALTY
             print("\n"+f"{ui.INDENT} WRONG in RISK MODE! (-1 point, -2 lives)\n".center(ui.SCREEN_WIDTH))
         else:
-            self.lives -= 1
+            self.lives -= NORMAL_LIFE_PENALTY
             print("\n"+f"{ui.INDENT} WRONG! (-1 point, -1 life)\n".center(ui.SCREEN_WIDTH))
         return None
     
