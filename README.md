@@ -187,6 +187,14 @@ Implementing this method ,it was important to separate and design cleanly the ro
 
 Enums were used because card suits, values, and types are fixed sets of valid options, and using Enums improves readability, safety, and consistency compared to variables or dictionaries.
 
+## Future Improvements
+
+ #### Graphical User Interface (GUI)
+Implement a simple Tkinter-based GUI to improve usability. The existing separation between the game logic and CLI would allow the current models and rules to be reused with minimal changes.
+
+#### Game State Logging
+Add support for saving and loading game state so players can resume sessions, further testing the robustness of the game model.
+
 
 # How to Run
 Run the project from the in command line:
