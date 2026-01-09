@@ -77,7 +77,7 @@ class HigherLower:
                 break
             print("\n"+f"{RULES_INDENT}Invalid input. Please type H/L or Higher/Lower.\n")
         
-            print("\n"+f"{RULES_INDENT}You picked ",answer,"! Lets see if your right....")
+        print("\n"+f"{RULES_INDENT}You picked ",answer,"! Let's see if your right....")
         time.sleep(1)
 
         next_card = self.card_deck.pick_a_card()
@@ -87,9 +87,11 @@ class HigherLower:
             self.start_game = False
             return False 
 
-        #ADD CONSEQUENCE LATER
         if next_card.is_joker_card():
-            print("\n"+f"{INDENT}JOKER CARD !\n")
+            print("\n"+f"{INDENT}JOKER CARD !\n".center(ui.SCREEN_WIDTH))
+            print(f"{INDENT}Points reset! JOKES ON YOU!\n".center(ui.SCREEN_WIDTH))
+            
+            self.points = 0
             self.current_card = self.pick_new_card()
             return True 
         
