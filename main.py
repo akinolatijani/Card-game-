@@ -6,6 +6,7 @@ def main():
     ui.print_game_title("CHOOSE GAME: ")
     choose_game = input(f"{ui.CARD_INDENT} A) Higher/Lower\n {ui.CARD_INDENT}B) Card hunt \n\n").strip().lower()
     ui.print_borderline()
+    
     if choose_game == "a":
         game_A_main()
     elif choose_game == "b":

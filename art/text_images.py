@@ -109,7 +109,7 @@ def make_grid_card(lines, centre_text):
     card_lines = lines.copy()
 
     centre_index = len(card_lines) // 2
-    inner_width = len(card_lines[0]) - 2  # remove the │ │ borders
+    inner_width = len(card_lines[0]) - 2 
 
     card_lines[centre_index] = (
         card_vertical_line +

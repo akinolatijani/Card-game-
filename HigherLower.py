@@ -8,9 +8,9 @@ class HigherLower:
         self.card_deck.shuffle_deck()
         self.current_card = self.pick_new_card()
 
-        self.points = 0
-        self.lives = 1
-        self.streak = 0
+        self.points    = 0
+        self.lives     = 1
+        self.streak    = 0
         self.round_num = 0
         self.start_game = False
 

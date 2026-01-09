@@ -10,11 +10,12 @@ class CardHunt:
         self.card_deck = Deck_of_cards()
         self.card_deck.shuffle_deck()
         self.size = size 
-        self.round_num = 0
-        self.start_game = False
-
+       
         self.lives = 15
         self.points = 0
+
+        self.round_num = 0
+        self.start_game = False
 
         self.grid_cards = []
         self.grid_cells = [] 
@@ -32,7 +33,7 @@ class CardHunt:
         print(f"Cards left in deck: {len(self.card_deck.cards)}")
 
     def remaining_cards(self):
-         return sum(1 for cards in self.card_deck.cards if cards.card_type != Card_type.JOKER)
+        return sum(1 for cards in self.card_deck.cards if cards.card_type != Card_type.JOKER)
    
     def get_game_score(self):
         return self.lives,self.points

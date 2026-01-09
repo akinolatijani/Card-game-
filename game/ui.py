@@ -43,7 +43,6 @@ def display_card(value, suit_symbol):
 
     print(cursor_erase, end="")
     print(f"{CARD_INDENT}{suit_lines}")
-
     print("\n\n\n\n\n")
 
 
@@ -63,21 +62,27 @@ def print_rules(rules):
         time.sleep(DELAY_SHORT) 
     print_borderline()
 
+
 def print_game_info():
     enter_button("\n"+"Press to ENTER to see HOW DO YOU WIN".center(SCREEN_WIDTH))
     print("\n" + f"{INDENT}HOW DO YOU WIN\n".center(SCREEN_WIDTH))
+
     print_borderline()
+
     print(f"{RULES_INDENT}  • Reach 10 points to WIN the game")
     print(f"{RULES_INDENT}  • Bonus points can be earned through streaks, Risk Mode, and ACE cards\n")
     
     enter_button("Press ENTER to see HOW YOU LOSE".center((SCREEN_WIDTH)))
     print("\n"+  (INDENT + "HOW DO YOU LOSE\n").center(SCREEN_WIDTH))
+
     print_borderline()
+
     print(f"{RULES_INDENT}  • You have 4 LIVES ****")
     print(f"{RULES_INDENT}  • Lose all LIVES....GAME OVER \n")
     print(f"{INDENT}GOODLUCK !".center(SCREEN_WIDTH),"\n")
 
     print_borderline()
+
 
 def print_round_summary(points, lives, round_num):
     print_borderline() 
