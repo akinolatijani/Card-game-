@@ -4,6 +4,7 @@ from game.Enums import Card_type
 from art.text_images import print_card_grid, make_card_border,make_grid_card
 import random
 import game.ui as ui
+import time 
 
 class CardHunt: 
     def __init__(self ,size=3):
@@ -11,7 +12,7 @@ class CardHunt:
         self.card_deck.shuffle_deck()
         self.size = size 
        
-        self.lives = 15
+        self.lives = 4
         self.points = 0
 
         self.round_num = 0
@@ -20,13 +21,13 @@ class CardHunt:
         self.grid_cards = []
         self.grid_cells = [] 
 
-    def reveal_card(self,index):
+    def reveal_card(self,index,message):
         card = self.grid_cards[index]
         card_value = card.value.name
         suit_symbol = card.suit.value[1]
 
         empty_lines,_ = make_card_border(card_value,suit_symbol)
-        self.grid_cells[index] = make_grid_card(empty_lines, "CORRECT")
+        self.grid_cells[index] = make_grid_card(empty_lines, message)
 
     def show_grid(self):
         print_card_grid(self.size, self.grid_cells)
@@ -69,8 +70,12 @@ class CardHunt:
     
             if answer == str(current_card_Index+1):
                 self.points += 1
-                print(f"{ui.INDENT}CORRECT GUESS !\n")
-                self.reveal_card(current_card_Index)
+                print(f"{         ui.INDENT}CORRECT GUESS !\n")
+                self.reveal_card(current_card_Index, "CORRECT")
+                self.show_grid()   
+
+                time.sleep(1)
+                self.reveal_card(current_card_Index, self.grid_cards[current_card_Index].value.name)
             else:
                 self.lives -= 1
                 print(f"\n{ui.INDENT}INCORRECT !\n")  
@@ -135,7 +140,7 @@ def game_B_main():
 
             ui.print_round_summary(points, lives, game.get_round_num())
 
-        play_again = input("PRESS (P) to PLAY AGAIN".center((ui.SCREEN_WIDTH))).strip().lower()
+        play_again = input("PRESS (P) to PLAY AGAIN\n".center((ui.SCREEN_WIDTH))).strip().lower()
         if play_again != "p":
             break
             
