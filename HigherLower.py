@@ -90,7 +90,7 @@ class HigherLower:
 
         if curr == nxt:
             print("\n"f"{RULES_INDENT}STALEMATE! Values are equal.\n".center(ui.SCREEN_WIDTH))
-            print(f"{RULES_INDENT}BONUS ROUND: Guess the color of the card (R/B)".center()+"\n")
+            print(f"{RULES_INDENT}BONUS ROUND: Guess the color of the card (R/B)".center(ui.SCREEN_WIDTH)+"\n")
 
             color_guess = input(f"{INDENT}Pick (R)ed or (B)lack: ".center(60)).strip().lower()
             if color_guess in ("r", "red"):

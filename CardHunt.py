@@ -8,7 +8,7 @@ import time
 
 class CardHunt: 
     def __init__(self ,size=3):
-        self.card_deck = Deck_of_cards()
+        self.card_deck = Deck_of_cards(include_jokers=False)
         self.card_deck.shuffle_deck()
         self.size = size 
        

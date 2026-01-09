@@ -12,4 +12,4 @@ class Cards:
     def __str__(self):
         if self.is_joker_card():
             return "JOKER"
-        return f"{self.value.name} of {self.suit.value}"
+        return f"{self.value.name} of {self.suit.label}"

@@ -1,5 +1,9 @@
 from enum import Enum
-from art.text_images import Hearts_image, Diamonds_image, Clubs_image, Spades_image
+
+Hearts_image   = "\u2665"
+Diamonds_image = "\u2666"
+Clubs_image    = "\u2663"
+Spades_image   = "\u2660"
 
 class Card_type(Enum):
     NORMAL = 1
