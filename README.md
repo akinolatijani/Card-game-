@@ -2,10 +2,12 @@
 
 ## Project Scope 
 
-This project is a command-line implementation of a Higher / Lower card game written in Python.
-The game uses a standard 52-card deck with the addition of two Joker cards. At the start of each round, the player is shown a card and must guess whether the next card drawn will be higher or lower in value.
+It was originally designed as a Higher / Lower card game, but was later extended with an alternative game mode to demonstrate flexibility, reuse of core logic, and design thinking.
 
-While the game mechanics themselves are intentionally simple, the main focus of this project was on clean design, structure, and extensibility, rather than just making the game functional.
+The project uses a standard 52-card deck with the addition of two Joker cards.
+Both games are played entirely in the terminal using a text-based user interface, with an emphasis on clean structure, extensibility, and readable output rather than graphical complexity.
+
+The goal of this project was not only to meet the functional requirements, but also to show thoughtful software design, particularly around object-oriented programming, separation of concerns, and future scalability.
 
 ## Design Decisons 
 
@@ -19,7 +21,15 @@ While the game mechanics themselves are intentionally simple, the main focus of 
 
 - Building a playable CLI interface
 
-Beyond the base requirements, several additional features were added to improve gameplay and demonstrate design thinking, such as Joker cards, Risk Mode, streak bonuses, and a more polished user interface.
+Beyond these requirements, the project was extended to include:
+
+- Two Joker cards with special handling
+
+- A reusable deck and card model shared across multiple games
+
+- A second game mode (Card Hunt) using the same card and deck logic
+
+- A structured UI layer to separate presentation from game logic
 
 OOP in this project would:
 - Reduced repetition when handling cards and the deck
@@ -75,6 +85,9 @@ Responsibilities:
 
 Separating deck logic into its own class ensures that the game logic does not directly manipulate card collections, which helps prevent invalid states and simplifies future extensions.
 
+## Game Modes
+
+## HigherLower Game
 
 ### HigherLower Class 
 The HigherLower class contains the core game logic
@@ -89,6 +102,10 @@ Manages:
 - Streak and bonus logic
 
 - Determining Win and lose conditions
+
+Each round presents the player with a card and asks them to guess whether the next card will be higher or lower in value.
+
+Additional mechanics such as streak bonuses, Risk Mode, and ACE multipliers were added to increase strategic depth while keeping the core gameplay simple.
 
 This class component was key for contorlling the game, coordinating interactions between the deck, the player and user interface
 
@@ -129,10 +146,51 @@ Keeping this logic in one method ensures the round flow is easy to follow and mo
 
 - ACE bonus handling
 
+## Card Hunt(Alternative Game)
+As an extension task an alternative game mode was implemenented called Card Hunt
+
+This game utilises the same card and deck classes but applies them in a different variation
+
+### Game Overview
+ - Cards are dealt onto a 3x3 grid
+ - Each cell is numbered and hidden from player
+ - The player is shown a card description:
+    - Value
+    - Suit
+- Correct guesses reveal the card and incorrect guesses reduce player lives
+- The game loops until there are no more cards in the deck remaining to fill the grid   
+
+The reason for developing this game mode demonstrated:
+- Reuse of existing systems without duplication and memory efficency
+- An innovative style of problem solving and user interaction
+
+## Key Methods for Card Hunt Class
+
+### populate_grid()
+
+Builds a grid using remaining cards from the deck while skipping Joker cards.
+Ensures that a new round only starts if enough cards are available.
+
+### new_round()
+
+- Controls round progression:
+
+- Shuffles remaining cards
+
+- Deals a new grid
+
+- Handles player guesses
+
+- Determines when to move to the next round or end the game
+
+Implementing this method ,it was important to separate and design cleanly the round logic from the game lifecycle logic 
+
 ## Use of Enums
+
 Enums were used because card suits, values, and types are fixed sets of valid options, and using Enums improves readability, safety, and consistency compared to variables or dictionaries.
 
 
-# HOW TO RUN 
-Run in command line:
-             python higherLower
+# How to Run
+Run the project from the in command line:
+   ```
+   python main.py 

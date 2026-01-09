@@ -194,7 +194,7 @@ def game_A_main():
             lives, points = game.get_game_score()
             ui.print_round_summary(points, lives,game.get_round_num())
         
-        play_again = input("PRESS (P) to PLAY AGAIN".center((ui.SCREEN_WIDTH))).strip().lower()
+        play_again = input("PRESS (P) to PLAY AGAIN\n".center((ui.SCREEN_WIDTH))).strip().lower()
         if play_again != "p":
             break
 
@@ -203,4 +203,4 @@ def game_A_main():
 
 
 
-    ## ADD COMMENTS TO CODE AND CREATE READ ME
+    ## ADD COMMENTS TO CODE 

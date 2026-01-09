@@ -74,7 +74,7 @@ class CardHunt:
                 self.reveal_card(current_card_Index, "CORRECT")
                 self.show_grid()   
 
-                time.sleep(1)
+                time.sleep(ui.DELAY_SHORT)
                 self.reveal_card(current_card_Index, self.grid_cards[current_card_Index].value.name)
             else:
                 self.lives -= 1
