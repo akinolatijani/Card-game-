@@ -9,26 +9,31 @@ The project uses a standard 52-card deck with the addition of two Joker cards. B
 The primary aim of this project was to demonstrate decision-making around structure, extensibility, and responsibility boundaries, rather than maximising feature count.
 
 ## Design Decisons 
+### Core Requirements First
 
-The core requirements of the project were intentionally implemented first, before introducing extensions:
+The core requirements of the project were intentionally implemented before introducing any extensions. This ensured a stable and predictable foundation on which additional features could be built.
 
-A standard deck abstraction to avoid duplicating card logic
+- A standard deck abstraction was created to avoid duplicating card logic.
 
-A controlled shuffling and drawing mechanism to prevent invalid game states
+- A controlled shuffling and drawing mechanism was implemented to prevent invalid game states.
 
-Explicit rule handling to keep gameplay predictable and testable
+- Explicit rule handling was prioritised to keep gameplay predictable and testable.
 
-A CLI-based interface to prioritise logic clarity over presentation
+- A CLI-based interface was chosen to prioritise logic clarity over presentation.
 
-Beyond these requirements, the project was extended with the following decisions in mind:
+### Extension-Driven Decisions
 
-Joker cards were added to introduce non-linear outcomes and force explicit handling of exceptional states
+Once the core requirements were complete, the project was extended with the following design considerations in mind:
 
-A shared deck and card model was used to ensure both games relied on the same core logic, reducing duplication
+- Joker cards were added to introduce non-linear outcomes and to force explicit handling of exceptional states.
 
-A second game mode (Card Hunt) was implemented to validate that the card and deck abstractions were flexible enough to support alternative rules
+- A shared deck and card model was used to ensure both games relied on the same core logic, reducing duplication.
 
-A separate UI module was introduced to avoid embedding formatting and presentation logic directly into game rules
+- A second game mode (Card Hunt) was implemented to validate that the card and deck abstractions were flexible enough to support alternative rules.
+
+- A separate UI module was introduced to avoid embedding formatting and presentation logic directly into the game rules.
+
+### Trade-offs
 
 The main trade-off of this approach is increased upfront structure for a relatively small project. This was considered acceptable in order to demonstrate scalability and reasoning rather than minimalism.
 
