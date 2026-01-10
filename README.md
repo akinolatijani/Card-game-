@@ -141,6 +141,10 @@ Keeping this logic in one method ensures the round flow is easy to follow and mo
 
 - ACE bonus handling
 
+ ## Probability Hint(Recent Addition)
+ A probability hint was added to the Higher / Lower game as a small gameplay extension, providing optional decision support without affecting randomness. Before each guess, the game analyses the remaining deck and calculates the likelihood of the next card being higher, lower, or equal in value relative to the current card. These values are displayed as simple percentages, ensuring the information reflects the true game state without influencing card draws or outcomes.
+ 
+
 ## Card Hunt(Alternative Game)
 As an extension task an alternative game mode was implemenented called Card Hunt
 

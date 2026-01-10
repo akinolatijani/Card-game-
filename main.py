@@ -15,7 +15,7 @@ def main():
             game_b_main()
             return
         else:
-            print(f"{ui.INDENT}Invalid choice. Type A or B \n")
+            print(f"{ui.INDb}Invalid choice. Type A or B \n")
 
 if __name__ == "__main__":
     main()

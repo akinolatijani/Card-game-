@@ -98,22 +98,24 @@ class HigherLower:
         equal_count, equal_prob = probabilities["equal"]
         joker_count, joker_prob = probabilities["joker"]
 
-        message = (indent+
-        f"Next card odds (out of {total_cards}): \n"
-        f"Higher {higher_prob * 100:.1f}% ({higher_count}) \n"
-        f"Lower {lower_prob * 100:.1f}% ({lower_count}) \n"
-        f"Equal {equal_prob * 100:.1f}% ({equal_count}) \n")
+        message = [
+        f"Next card odds (out of {total_cards})",
+        f"Higher: {higher_prob * 100:.1f}% ({higher_count})",
+        f"Lower: {lower_prob * 100:.1f}% ({lower_count})",
+        f"Equal: {equal_prob * 100:.1f}% ({equal_count})",
+        ]
 
         if joker_count > 0:
-            message += f"Joker {joker_prob * 100:.1f}% ({joker_count})"
-
-        print(f"\n{rules_indent}{message}\n")
+            message.append(f"Joker {joker_prob * 100:.1f}% ({joker_count})")
+       
+        for msg in message:
+            print(f"{rules_indent}{msg}") 
 
     def show_current_card(self, rules_indent, indent):
-        print( "\n", f"{rules_indent}Current card : {self.current_card.value.name} of {self.current_card.suit.label}", )
+        print( "\n", f"{rules_indent}    Current card : {self.current_card.value.name} of {self.current_card.suit.label}", )
         time.sleep(ui.DELAY_SHORT)
 
-        print(f"\n{indent}TIME TO GUESS !".center(ui.SCREEN_WIDTH), "\n")
+        print(f"\n{indent}{indent}TIME TO GUESS !".center(ui.SCREEN_WIDTH), "\n")
         time.sleep(ui.DELAY_LONG)
 
     def prompt_risk_mode(self, rules_indent, indent) -> bool:
@@ -212,14 +214,14 @@ class HigherLower:
             return False
 
         self.show_current_card(rules_indent, indent)
-        hint_request = input("Enter need a hint (Y/N): ").lower().strip()
+        hint_request = input(f"{indent}   Enter need a hint (Y/N): ").lower().strip()
         if hint_request == "y":
             if self.hints_remaining > 0:
                 self.hints_remaining -= 1
                 self.display_probability_hint(rules_indent, indent)
             else:
-                print("No hints remaining")
-                
+                print(f"{indent}No hints remaining")
+
         risk_mode = self.prompt_risk_mode(rules_indent, indent)
         answer = self.prompt_higher_lower(rules_indent, indent)
 
