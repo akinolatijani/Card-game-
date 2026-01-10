@@ -54,6 +54,60 @@ class HigherLower:
             return None
         return next_card
 
+    def next_card_probabilty(self):
+        if self.current_card is None:
+            return {"higher": (0,0.0),"lower": (0,0.0),"equal": (0,0.0),"joker": (0,0.0),"total": (0,0.0)}
+        
+        remaining_cards = self.card_deck.cards
+        total_cards = len(remaining_cards)
+
+        if total_cards == 0:
+            return {"higher": (0,0.0),"lower": (0,0.0),"equal": (0,0.0),"joker": (0,0.0),"total": (0,0.0)}
+
+        current_value = self.current_card.value.value
+
+        higher,lower,equal,joker = 0,0,0,0 
+
+        for card in remaining_cards:
+            if card.is_joker_card():
+                joker += 1
+                continue
+            
+            card_value = card.value.value
+
+            if card_value > current_value:
+                higher += 1
+            elif card_value < current_value:
+                lower += 1
+            else:
+                equal += 1
+
+            
+        return {"higher": (higher, higher / total_cards),"lower":  (lower, lower / total_cards),"equal": (equal, equal / total_cards),"joker":  (joker, joker / total_cards),"total": (total_cards, 1.0),}
+
+    def display_probability_hint(self, rules_indent, indent):
+        probabilities = self.get_next_card_probabilities()
+        total_cards = probabilities["total"][0]
+
+        if total_cards == 0:
+            return
+        
+        higher_count, higher_prob = probabilities["higher"]
+        lower_count, lower_prob = probabilities["lower"]
+        equal_count, equal_prob = probabilities["equal"]
+        joker_count, joker_prob = probabilities["joker"]
+
+        message = (
+        f"Next card odds (out of {total_cards}): "
+        f"Higher {higher_prob * 100:.1f}% ({higher_count}), "
+        f"Lower {lower_prob * 100:.1f}% ({lower_count}), "
+        f"Equal {equal_prob * 100:.1f}% ({equal_count})")
+
+        if joker_count > 0:
+            message += f", Joker {joker_prob * 100:.1f}% ({joker_count})"
+
+        print(f"\n{rules_indent}{message}\n")
+
     def show_current_card(self, rules_indent, indent):
         print( "\n", f"{rules_indent}Current card : {self.current_card.value.name} of {self.current_card.suit.label}", )
         time.sleep(ui.DELAY_SHORT)
@@ -230,7 +284,7 @@ class HigherLower:
 def game_a_main():
     ui.print_game_title("WELCOME TO HIGHER OR LOWER GAME ")
     ui.print_game_title("GAME INSTRUCTIONS")
-    ui.print_rules(ui.RULES)
+    ui.print_rules(ui.HIGHER_OR_LOWER_RULES)
     ui.print_game_info()
 
     while True:

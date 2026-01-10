@@ -13,7 +13,7 @@ RULES_INDENT     = " " * 38
 ASTERICKS_INDENT = " " * 25
 CARD_INDENT      = " " * 75
 
-RULES = [
+HIGHER_OR_LOWER_RULES = [
             "52-card deck + 2 Jokers",
             "One card is drawn to start the game",
             "Each round, guess Higher or Lower",
@@ -24,6 +24,14 @@ RULES = [
             "Stalemate: guess Red/Black (+1 point or -1 life)",
             ]
 
+CARDHUNT_RULES = [
+            "52 card deck  ",
+            "A 3x3 grid cell is created eagch round",
+            "Grid is filled with random cards from the deck ,all hidden at first",
+            "Each turn, the game names a hidden card and you must guess which number cell it is",
+            "A correct guess = +1 point, wrong guess = -1 life",
+            "Game ends when lives reach 0 or the deck can’t fill a new grid",
+        ]       
 
 def display_card(value, suit_symbol):
     cursor_move   =  "\033[F"

@@ -127,8 +127,7 @@ def game_b_main():
         game = CardHunt(size =CARDHUNT_DEFAULT_GRID_SIZE)
         ui.print_game_title("WELCOME TO GUESS THE CARD ")
         ui.print_game_title("GAME INSTRUCTIONS")
-        ui.print_borderline()
-        ui.print_game_info()
+        ui.print_rules(ui.CARDHUNT_RULES)
 
         Start_game = input(f"{ui.INDENT}  PRESS (S) TO START GAME ").strip().lower()
         if Start_game == "s":
