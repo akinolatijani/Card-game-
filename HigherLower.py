@@ -22,6 +22,7 @@ class HigherLower:
         self.round_num = 0
         self.WIN_POINTS = 10
         self.start_game = False
+        self.hints_remaining = 3
 
     def get_round_num(self):
         return self.round_num 
@@ -54,7 +55,7 @@ class HigherLower:
             return None
         return next_card
 
-    def next_card_probabilty(self):
+    def next_card_probability(self):
         if self.current_card is None:
             return {"higher": (0,0.0),"lower": (0,0.0),"equal": (0,0.0),"joker": (0,0.0),"total": (0,0.0)}
         
@@ -86,7 +87,7 @@ class HigherLower:
         return {"higher": (higher, higher / total_cards),"lower":  (lower, lower / total_cards),"equal": (equal, equal / total_cards),"joker":  (joker, joker / total_cards),"total": (total_cards, 1.0),}
 
     def display_probability_hint(self, rules_indent, indent):
-        probabilities = self.get_next_card_probabilities()
+        probabilities = self.next_card_probability()
         total_cards = probabilities["total"][0]
 
         if total_cards == 0:
@@ -97,14 +98,14 @@ class HigherLower:
         equal_count, equal_prob = probabilities["equal"]
         joker_count, joker_prob = probabilities["joker"]
 
-        message = (
-        f"Next card odds (out of {total_cards}): "
-        f"Higher {higher_prob * 100:.1f}% ({higher_count}), "
-        f"Lower {lower_prob * 100:.1f}% ({lower_count}), "
-        f"Equal {equal_prob * 100:.1f}% ({equal_count})")
+        message = (indent+
+        f"Next card odds (out of {total_cards}): \n"
+        f"Higher {higher_prob * 100:.1f}% ({higher_count}) \n"
+        f"Lower {lower_prob * 100:.1f}% ({lower_count}) \n"
+        f"Equal {equal_prob * 100:.1f}% ({equal_count}) \n")
 
         if joker_count > 0:
-            message += f", Joker {joker_prob * 100:.1f}% ({joker_count})"
+            message += f"Joker {joker_prob * 100:.1f}% ({joker_count})"
 
         print(f"\n{rules_indent}{message}\n")
 
@@ -211,7 +212,14 @@ class HigherLower:
             return False
 
         self.show_current_card(rules_indent, indent)
-        
+        hint_request = input("Enter need a hint (Y/N): ").lower().strip()
+        if hint_request == "y":
+            if self.hints_remaining > 0:
+                self.hints_remaining -= 1
+                self.display_probability_hint(rules_indent, indent)
+            else:
+                print("No hints remaining")
+                
         risk_mode = self.prompt_risk_mode(rules_indent, indent)
         answer = self.prompt_higher_lower(rules_indent, indent)
 
