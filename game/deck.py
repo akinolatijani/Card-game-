@@ -6,7 +6,6 @@ import random
 class Deck():
     def __init__(self, include_jokers=False):
 
-        #loop through set of cards to create full deck of 52 cards
         self.cards = [ Cards(suit,value, Card_type.NORMAL) 
             for suit in  Card_suits
             for value in Card_values ]
@@ -14,7 +13,6 @@ class Deck():
         if include_jokers:
             self.cards.extend(Cards(card_type=Card_type.JOKER) for x in range(2)) 
  
-    #Method for shuffling deck of cards
     def shuffle_deck(self):
         num = 1
         for x in range(len(self.cards) -1 ,0,-1):

@@ -17,7 +17,7 @@ class HigherLower:
         self.current_card = self.pick_new_card()
 
         self.points    = 0
-        self.lives     = 4
+        self.lives     = 1
         self.streak    = 0
         self.round_num = 0
         self.WIN_POINTS = 10
@@ -168,7 +168,7 @@ class HigherLower:
         print("\n"f"{rules_indent}STALEMATE! Values are equal.\n".center(ui.SCREEN_WIDTH))
         print(f"{rules_indent}BONUS ROUND: Guess the colour of the card (R/B)".center(ui.SCREEN_WIDTH)+ "\n" )
 
-        guessed_red = self._prompt_red_black(rules_indent, indent)
+        guessed_red = self.prompt_red_black(rules_indent, indent)
         if guessed_red is None:
             self.current_card = next_card
             return True
@@ -317,6 +317,6 @@ def game_a_main():
         if play_again != "p":
             break
 
-        ui.print_game_title("Thanks for playing my game ! Hope you enjoyed !")
+    ui.print_game_title("Thanks for playing my game ! Hope you enjoyed !")
 
 
